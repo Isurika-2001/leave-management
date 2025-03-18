@@ -1,88 +1,160 @@
 import {
-    Button,
-    IconButton,
-    Menu,
-    MenuItem,
-    Stack,
-    Typography,
-  } from '@mui/material';
-  import IconifyIcon from 'components/base/IconifyIcon';
-  import { ReactElement, useState } from 'react';
-  
-  const LeaveRequest = (): ReactElement => {
-    const [anchorEl, setAnchorEl] = useState(null);
-    const open = Boolean(anchorEl);
-  
-    const handleClick = (event: any) => {
-      setAnchorEl(event.target);
-    };
-  
-    const handleClose = () => {
-      setAnchorEl(null);
-    };
-  
-    return (
-      <Stack
-        sx={{
-          bgcolor: 'common.white',
-          borderRadius: 5,
-          height: 1,
-          flex: '1 1 auto',
-          width: { xs: 'auto', sm: 0.5, lg: 'auto' },
-          boxShadow: (theme) => theme.shadows[4],
-        }}
-      >
-        <Stack direction="row" justifyContent="space-between" alignItems="center" padding={2.5}>
-          <Typography variant="subtitle1" color="text.primary">
-            Leave Request
-          </Typography>
-          <IconButton
-            aria-controls={open ? 'leave-request-menu' : undefined}
-            aria-haspopup="true"
-            onClick={handleClick}
-            sx={{
-              bgcolor: open ? 'action.active' : 'transparent',
-              p: 1,
-              width: 36,
-              height: 36,
-              '&:hover': {
-                bgcolor: 'action.active',
-              },
-            }}
-          >
-            <IconifyIcon icon="ph:dots-three-outline-fill" color="text.secondary" />
-          </IconButton>
-          <Menu
-            id="leave-request-menu"
-            anchorEl={anchorEl}
-            open={open}
-            onClose={handleClose}
-            MenuListProps={{
-              'aria-labelledby': 'leave-request-button',
-            }}
-            transformOrigin={{ horizontal: 'right', vertical: 'top' }}
-            anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}
-          >
-            <MenuItem onClick={handleClose}>
-              <Typography variant="body1" component="p">
-                Edit
-              </Typography>
-            </MenuItem>
-            <MenuItem onClick={handleClose}>
-              <Typography variant="body1" component="p" color="error.main">
-                Delete
-              </Typography>
-            </MenuItem>
-          </Menu>
-        </Stack>
-        <Stack spacing={2} padding={2.5}>
-          <Button variant="contained" color="primary" fullWidth>
-            Request Leave
-          </Button>
-        </Stack>
-      </Stack>
-    );
+  Button,
+  Stack,
+  Typography,
+  TextField,
+  MenuItem,
+  Select,
+  FormControl,
+  InputLabel,
+} from '@mui/material';
+import { ReactElement, useState } from 'react';
+
+const LeaveRequest = (): ReactElement => {
+  const [leaveType, setLeaveType] = useState('');
+  const [startDate, setStartDate] = useState('');
+  const [endDate, setEndDate] = useState('');
+  const [reason, setReason] = useState('');
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [error, setError] = useState('');
+
+  const leaveOptions = [
+    { label: 'Sick Leave', value: 'sick' },
+    { label: 'Casual Leave', value: 'casual' },
+    { label: 'Vacation Leave', value: 'vacation' },
+    { label: 'Maternity Leave', value: 'maternity' },
+    { label: 'Paternity Leave', value: 'paternity' },
+  ];
+
+  const handleLeaveRequest = async () => {
+    if (!leaveType || !startDate || !endDate || !reason) {
+      setError('Please fill in all fields');
+      return;
+    }
+
+    try {
+      setIsSubmitting(true);
+      setError('');
+
+      const response = await fetch('/api/leave-request', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          leaveType,
+          startDate,
+          endDate,
+          reason,
+        }),
+      });
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        throw new Error(data.message || 'An error occurred');
+      }
+
+      alert(data.message);
+      setLeaveType('');
+      setStartDate('');
+      setEndDate('');
+      setReason('');
+    } catch (err) {
+      setError(err.message || 'An error occurred');
+    } finally {
+      setIsSubmitting(false);
+    }
   };
-  
-  export default LeaveRequest;
-  
+
+  return (
+    <Stack
+      sx={{
+        bgcolor: 'common.white',
+        borderRadius: 5,
+        width: { xs: '100%', sm: '50%', md: '30%' },
+        padding: 3,
+        boxShadow: (theme) => theme.shadows[4],
+        margin: 'auto',
+      }}
+    >
+      <Typography variant="h6" color="text.primary" textAlign="center" mb={2}>
+        Leave Request
+      </Typography>
+
+      <Stack spacing={2} width="100%">
+        {/* Leave Type (Select Box) */}
+        <FormControl fullWidth>
+          <InputLabel>Leave Type</InputLabel>
+          <Select
+            value={leaveType}
+            onChange={(e) => setLeaveType(e.target.value)}
+            label="Leave Type"
+            fullWidth
+          >
+            {leaveOptions.map((option) => (
+              <MenuItem key={option.value} value={option.value}>
+                {option.label}
+              </MenuItem>
+            ))}
+          </Select>
+        </FormControl>
+
+        {/* Start Date */}
+        <TextField
+          label="Start Date"
+          variant="outlined"
+          type="date"
+          value={startDate}
+          onChange={(e) => setStartDate(e.target.value)}
+          fullWidth
+          InputLabelProps={{ shrink: true }}
+        />
+
+        {/* End Date */}
+        <TextField
+          label="End Date"
+          variant="outlined"
+          type="date"
+          value={endDate}
+          onChange={(e) => setEndDate(e.target.value)}
+          fullWidth
+          InputLabelProps={{ shrink: true }}
+        />
+
+        {/* Reason */}
+        <TextField
+          label="Reason"
+          variant="outlined"
+          value={reason}
+          onChange={(e) => setReason(e.target.value)}
+          fullWidth
+          multiline
+          rows={4}
+        />
+
+        {error && <Typography color="error">{error}</Typography>}
+
+        {/* Submit Button */}
+        <Button
+          variant="contained"
+          color="primary"
+          fullWidth
+          onClick={handleLeaveRequest}
+          disabled={isSubmitting}
+          sx={{
+            borderRadius: 2,
+            boxShadow: (theme) => theme.shadows[2],
+            '&:hover': {
+              bgcolor: 'primary.dark',
+            },
+          }}
+        >
+          {isSubmitting ? 'Submitting...' : 'Request Leave'}
+        </Button>
+      </Stack>
+    </Stack>
+  );
+};
+
+export default LeaveRequest;

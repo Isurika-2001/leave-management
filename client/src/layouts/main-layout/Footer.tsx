@@ -10,14 +10,13 @@ const Footer = () => {
       my={3.75}
     >
       <Typography variant="subtitle2" fontFamily={'Poppins'} color="text.primary">
-        Made with <span style={{ color: 'red' }}>&#10084;</span> by{' '}
         <Link
           href="https://themewagon.com"
           target="_blank"
           rel="noopener"
           sx={{ color: 'text.primary', '&:hover': { color: 'primary.main' } }}
         >
-          ThemeWagon
+          Isurika Samarakoon 
         </Link>
       </Typography>
     </Stack>

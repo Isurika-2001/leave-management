@@ -14,6 +14,7 @@ import {
   FormControl,
   InputLabel,
   Chip,
+  TableSortLabel,
 } from '@mui/material';
 import { useState } from 'react';
 import { SelectChangeEvent } from '@mui/material';
@@ -46,10 +47,13 @@ const LeaveHistory = () => {
     leaveType: '',
   });
 
+  const [sortConfig, setSortConfig] = useState<{ key: keyof LeaveData; direction: 'asc' | 'desc' }>({
+    key: 'user',
+    direction: 'asc',
+  });
+
   // Separate event handler for TextField (Date fields or input fields)
-  const handleTextFieldChange = (
-    event: React.ChangeEvent<HTMLInputElement>
-  ) => {
+  const handleTextFieldChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = event.target;
     setFilters((prevFilters) => ({
       ...prevFilters,
@@ -58,9 +62,7 @@ const LeaveHistory = () => {
   };
 
   // Separate event handler for Select component
-  const handleSelectChange = (
-    event: SelectChangeEvent<string>
-  ) => {
+  const handleSelectChange = (event: SelectChangeEvent<string>) => {
     const { name, value } = event.target;
     setFilters((prevFilters) => ({
       ...prevFilters,
@@ -107,6 +109,23 @@ const LeaveHistory = () => {
       />
     );
   };
+
+  // Function to handle sorting
+  const handleSortRequest = (key: keyof LeaveData) => {
+    const direction = sortConfig.key === key && sortConfig.direction === 'asc' ? 'desc' : 'asc';
+    setSortConfig({ key, direction });
+  };
+
+  // Sort filtered data
+  const sortedData = filteredData.sort((a, b) => {
+    if (a[sortConfig.key] < b[sortConfig.key]) {
+      return sortConfig.direction === 'asc' ? -1 : 1;
+    }
+    if (a[sortConfig.key] > b[sortConfig.key]) {
+      return sortConfig.direction === 'asc' ? 1 : -1;
+    }
+    return 0;
+  });
 
   return (
     <Stack
@@ -189,18 +208,74 @@ const LeaveHistory = () => {
         <Table>
           <TableHead sx={{ bgcolor: 'grey.200' }}>
             <TableRow>
-              <TableCell><strong>User</strong></TableCell>
-              <TableCell><strong>Role</strong></TableCell>
-              <TableCell><strong>Department</strong></TableCell>
-              <TableCell><strong>Leave Type</strong></TableCell>
-              <TableCell><strong>Start Date</strong></TableCell>
-              <TableCell><strong>End Date</strong></TableCell>
-              <TableCell><strong>Status</strong></TableCell>
+              <TableCell>
+                <TableSortLabel
+                  active={sortConfig.key === 'user'}
+                  direction={sortConfig.direction}
+                  onClick={() => handleSortRequest('user')}
+                >
+                  User
+                </TableSortLabel>
+              </TableCell>
+              <TableCell>
+                <TableSortLabel
+                  active={sortConfig.key === 'role'}
+                  direction={sortConfig.direction}
+                  onClick={() => handleSortRequest('role')}
+                >
+                  Role
+                </TableSortLabel>
+              </TableCell>
+              <TableCell>
+                <TableSortLabel
+                  active={sortConfig.key === 'department'}
+                  direction={sortConfig.direction}
+                  onClick={() => handleSortRequest('department')}
+                >
+                  Department
+                </TableSortLabel>
+              </TableCell>
+              <TableCell>
+                <TableSortLabel
+                  active={sortConfig.key === 'leaveType'}
+                  direction={sortConfig.direction}
+                  onClick={() => handleSortRequest('leaveType')}
+                >
+                  Leave Type
+                </TableSortLabel>
+              </TableCell>
+              <TableCell>
+                <TableSortLabel
+                  active={sortConfig.key === 'startDate'}
+                  direction={sortConfig.direction}
+                  onClick={() => handleSortRequest('startDate')}
+                >
+                  Start Date
+                </TableSortLabel>
+              </TableCell>
+              <TableCell>
+                <TableSortLabel
+                  active={sortConfig.key === 'endDate'}
+                  direction={sortConfig.direction}
+                  onClick={() => handleSortRequest('endDate')}
+                >
+                  End Date
+                </TableSortLabel>
+              </TableCell>
+              <TableCell>
+                <TableSortLabel
+                  active={sortConfig.key === 'status'}
+                  direction={sortConfig.direction}
+                  onClick={() => handleSortRequest('status')}
+                >
+                  Status
+                </TableSortLabel>
+              </TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
-            {filteredData.length > 0 ? (
-              filteredData.map((row) => (
+            {sortedData.length > 0 ? (
+              sortedData.map((row) => (
                 <TableRow key={row.id}>
                   <TableCell>{row.user}</TableCell>
                   <TableCell>{row.role}</TableCell>

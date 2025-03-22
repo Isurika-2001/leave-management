@@ -76,22 +76,23 @@ const navItems: NavItem[] = [
     ],
   },
   {
-    title: 'Admin',
-    path: 'admin',
+    title: 'Department',
+    path: '/department-management',
     icon: 'mingcute:grid-fill',
+    active: true,
+    collapsible: false
+  },
+  {
+    title: 'Employee',
+    path: '/employee',
+    icon: 'ion:person',
     active: false,
     collapsible: true,
     sublist: [
       {
-        title: 'Department',
-        path: '/department-management',
-        active: false,
-        collapsible: false,
-      },
-      {
-        title: 'Employee',
+        title: 'List',
         path: '/employee-management',
-        active: false,
+        active: true,  // Set to true if you want it active by default
         collapsible: false,
       },
       {
@@ -101,8 +102,7 @@ const navItems: NavItem[] = [
         collapsible: false,
       },
     ],
-  },
+  },  
 ];
 
 export default navItems;
-

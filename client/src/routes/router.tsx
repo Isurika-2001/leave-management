@@ -39,9 +39,9 @@ const LeaveRequest = lazy(() => import('pages/leave/LeaveRequest'));
 const LeaveHistory = lazy(() => import('pages/leave/LeaveHistory'));
 const LeaveApproval = lazy(() => import('pages/leave/LeaveApproval'));
 
-const DepartmentManagement = lazy(() => import('pages/admin/DepartmentManagement'));
-const EmployeeManagement = lazy(() => import('pages/admin/EmployeeManagement'));
-const LeaveQuotaManagement = lazy(() => import('pages/admin/LeaveQuotaManagement'));
+const DepartmentManagement = lazy(() => import('pages/department/DepartmentManagement'));
+const EmployeeManagement = lazy(() => import('pages/employee/EmployeeManagement'));
+const LeaveQuotaManagement = lazy(() => import('pages/employee/LeaveQuotaManagement'));
 
 const routes: RouteObject[] = [
   {

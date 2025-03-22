@@ -1,10 +1,10 @@
 import { Stack } from '@mui/material';
-import { saleInfoData } from 'data/sale-info-data';
-import SaleInfo from './SaleInfo';
+import { saleInfoData } from 'data/sale-info-data_2';
+import SaleInfo from './LeaveInfo';
 
 const SaleInfoCards = () => {
   return (
-    <Stack direction={{ sm: 'row' }} justifyContent={{ sm: 'space-between' }} gap={3.75}>
+    <Stack direction={{ sm: 'column' }} justifyContent={{ sm: 'space-between' }} gap={3.75}>
       {saleInfoData.map((saleInfoDataItem) => (
         <SaleInfo
           key={saleInfoDataItem.id}

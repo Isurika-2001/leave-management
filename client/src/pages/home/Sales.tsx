@@ -2,12 +2,10 @@ import Grid from '@mui/material/Unstable_Grid2';
 import { Stack } from '@mui/material';
 import { ReactElement } from 'react';
 
-import TopSellingProduct from 'components/sections/dashboard/Home/Sales/TopSellingProduct/TopSellingProduct';
 import WebsiteVisitors from 'components/sections/dashboard/Home/Sales/WebsiteVisitors/WebsiteVisitors';
-import SaleInfoCards from 'components/sections/dashboard/Home/Sales/SaleInfoSection/SaleInfoCards';
-import BuyersProfile from 'components/sections/dashboard/Home/Sales/BuyersProfile/BuyersProfile';
+import SaleInfoCards from 'components/sections/dashboard/Home/Sales/SaleInfoSection/LeaveInfoCards';
+import SaleInfoCards2 from 'components/sections/dashboard/Home/Sales/SaleInfoSection/LeaveInfoCards2';
 import NewCustomers from 'components/sections/dashboard/Home/Sales/NewCustomers/NewCustomers';
-import Revenue from 'components/sections/dashboard/Home/Sales/Revenue/Revenue';
 
 import { drawerWidth } from 'layouts/main-layout';
 
@@ -30,14 +28,11 @@ const Sales = (): ReactElement => {
       <Grid xs={12}>
         <SaleInfoCards />
       </Grid>
-      <Grid xs={12} md={8}>
-        <Revenue />
+      <Grid xs={12} md={4}>
+        <SaleInfoCards2 />
       </Grid>
       <Grid xs={12} md={4}>
         <WebsiteVisitors />
-      </Grid>
-      <Grid xs={12} lg={8}>
-        <TopSellingProduct />
       </Grid>
       <Grid xs={12} lg={4}>
         <Stack
@@ -47,7 +42,6 @@ const Sales = (): ReactElement => {
           width={1}
         >
           <NewCustomers />
-          <BuyersProfile />
         </Stack>
       </Grid>
     </Grid>

@@ -12,6 +12,8 @@ const WebsiteVisitors = (): ReactElement => {
     { value: 3960, name: 'Organic' },
     { value: 2160, name: 'Paid' },
     { value: 5040, name: 'Social' },
+    { value: 2160, name: 'Paid' },
+    { value: 5040, name: 'Social' },
   ];
 
   const legendData = [
@@ -19,11 +21,15 @@ const WebsiteVisitors = (): ReactElement => {
     { name: 'Organic', icon: 'circle' },
     { name: 'Paid', icon: 'circle' },
     { name: 'Social', icon: 'circle' },
+    { name: 'Paid', icon: 'circle' },
+    { name: 'Social', icon: 'circle' },
   ];
 
   const pieChartColors = [
     theme.palette.primary.main,
     theme.palette.secondary.main,
+    theme.palette.info.main,
+    theme.palette.error.main,
     theme.palette.info.main,
     theme.palette.error.main,
   ];
@@ -76,8 +82,8 @@ const WebsiteVisitors = (): ReactElement => {
             colors={pieChartColors}
             legendData={legendData}
             sx={{
-              width: 222,
-              maxHeight: 222,
+              width: 212,
+              maxHeight: 212,
               mx: 'auto',
             }}
           />

@@ -4,20 +4,36 @@ const Footer = () => {
   return (
     <Stack
       direction="row"
-      justifyContent={{ xs: 'center', md: 'flex-end' }}
-      ml={{ xs: 3.75, lg: 34.75 }}
-      mr={3.75}
-      my={3.75}
+      justifyContent="flex-end" // Aligns the content to the right
+      alignItems="center"
+      sx={{
+        py: 2, // Padding for better spacing
+        px: { xs: 2, md: 4 },
+        borderTop: 1, // Subtle top border for separation
+        borderColor: 'grey.300',
+      }}
     >
-      <Typography variant="subtitle2" fontFamily={'Poppins'} color="text.primary">
+      <Typography 
+        variant="body2" 
+        fontFamily="Poppins" 
+        color="text.secondary"
+        textAlign="right" // Align text to the right
+      >
+        © {new Date().getFullYear()}  
         <Link
           href="https://themewagon.com"
           target="_blank"
           rel="noopener"
-          sx={{ color: 'text.primary', '&:hover': { color: 'primary.main' } }}
+          sx={{ 
+            color: 'text.primary', 
+            textDecoration: 'none', 
+            fontWeight: 600, 
+            ml: 0.5,
+            '&:hover': { color: 'primary.main', textDecoration: 'underline' } 
+          }}
         >
-          Isurika Samarakoon 
-        </Link>
+          Isurika Samarakoon
+        </Link>. All rights reserved.
       </Typography>
     </Stack>
   );

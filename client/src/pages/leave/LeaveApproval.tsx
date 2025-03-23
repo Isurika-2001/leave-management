@@ -8,13 +8,11 @@ import {
   TableHead,
   TableRow,
   Paper,
-  Chip,
   Button,
-  TableSortLabel
+  TableSortLabel,
 } from '@mui/material';
 import { useState } from 'react';
 
-// Define the type for Leave Data
 interface LeaveData {
   id: number;
   user: string;
@@ -38,7 +36,6 @@ const PendingLeaveRequests = () => {
     direction: 'asc',
   });
 
-  // Function to handle sorting
   const handleSort = (key: keyof LeaveData) => {
     setSortConfig((prev) => ({
       key,
@@ -46,35 +43,29 @@ const PendingLeaveRequests = () => {
     }));
   };
 
-  // Sorting function
-// Sorting function
-const sortedData = [...dummyData]
-  .filter((row) => row.status === 'Pending') // Only Pending Requests
-  .sort((a, b) => {
-    const valueA = a[sortConfig.key];
-    const valueB = b[sortConfig.key];
+  const sortedData = [...dummyData]
+    .filter((row) => row.status === 'Pending')
+    .sort((a, b) => {
+      const valueA = a[sortConfig.key];
+      const valueB = b[sortConfig.key];
 
-    // Convert to date if sorting by date
-    if (['applyDate', 'startDate', 'endDate'].includes(sortConfig.key)) {
+      if (['applyDate', 'startDate', 'endDate'].includes(sortConfig.key)) {
+        return sortConfig.direction === 'asc'
+          ? new Date(valueA).getTime() - new Date(valueB).getTime()
+          : new Date(valueB).getTime() - new Date(valueA).getTime();
+      }
+
+      if (typeof valueA === 'string' && typeof valueB === 'string') {
+        return sortConfig.direction === 'asc'
+          ? valueA.localeCompare(valueB)
+          : valueB.localeCompare(valueA);
+      }
+
       return sortConfig.direction === 'asc'
-        ? new Date(valueA).getTime() - new Date(valueB).getTime()
-        : new Date(valueB).getTime() - new Date(valueA).getTime();
-    }
+        ? (valueA as number) - (valueB as number)
+        : (valueB as number) - (valueA as number);
+    });
 
-    // Sort alphabetically for other columns (ensure values are strings)
-    if (typeof valueA === 'string' && typeof valueB === 'string') {
-      return sortConfig.direction === 'asc'
-        ? valueA.localeCompare(valueB)
-        : valueB.localeCompare(valueA);
-    }
-
-    // If not string, just compare numerically
-    return sortConfig.direction === 'asc'
-      ? (valueA as number) - (valueB as number)
-      : (valueB as number) - (valueA as number);
-  });
-
-  // Approve/Decline Handlers
   const handleApprove = (id: number) => {
     console.log(`Approved leave request ID: ${id}`);
   };
@@ -94,15 +85,16 @@ const sortedData = [...dummyData]
         boxShadow: (theme) => theme.shadows[4],
         padding: 2.5,
         marginRight: 3,
+        flexWrap: 'wrap',
       }}
     >
       <Typography variant="subtitle1" color="text.primary" sx={{ mb: 2 }}>
         Pending Leave Requests
       </Typography>
 
-      {/* Table */}
-      <TableContainer component={Paper} sx={{ borderRadius: 2, overflow: 'hidden' }}>
-        <Table>
+      {/* Wrapping Box for Horizontal Scroll */}
+      <TableContainer component={Paper} sx={{ borderRadius: 2, overflowX: 'auto', overflowY: 'hidden' }}>
+        <Table sx={{ minWidth: 'max-content' }}>
           <TableHead sx={{ bgcolor: 'grey.200' }}>
             <TableRow>
               {[
@@ -113,9 +105,8 @@ const sortedData = [...dummyData]
                 { label: 'Apply Date', key: 'applyDate' },
                 { label: 'Start Date', key: 'startDate' },
                 { label: 'End Date', key: 'endDate' },
-                { label: 'Status', key: 'status' },
               ].map(({ label, key }) => (
-                <TableCell key={key}>
+                <TableCell key={key} sx={{ whiteSpace: 'nowrap' }}>
                   <TableSortLabel
                     active={sortConfig.key === key}
                     direction={sortConfig.direction}
@@ -125,7 +116,9 @@ const sortedData = [...dummyData]
                   </TableSortLabel>
                 </TableCell>
               ))}
-              <TableCell><strong>Actions</strong></TableCell>
+              <TableCell>
+                <strong>Actions</strong>
+              </TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
@@ -136,12 +129,9 @@ const sortedData = [...dummyData]
                   <TableCell>{row.role}</TableCell>
                   <TableCell>{row.department}</TableCell>
                   <TableCell>{row.leaveType}</TableCell>
-                  <TableCell>{row.applyDate}</TableCell>
-                  <TableCell>{row.startDate}</TableCell>
-                  <TableCell>{row.endDate}</TableCell>
-                  <TableCell>
-                    <Chip label="Pending" color="warning" sx={{ fontWeight: 600 }} />
-                  </TableCell>
+                  <TableCell sx={{ whiteSpace: 'nowrap' }}>{row.applyDate}</TableCell>
+                  <TableCell sx={{ whiteSpace: 'nowrap' }}>{row.startDate}</TableCell>
+                  <TableCell sx={{ whiteSpace: 'nowrap' }}>{row.endDate}</TableCell>
                   <TableCell>
                     <Button variant="contained" color="success" size="small" sx={{ mr: 1 }} onClick={() => handleApprove(row.id)}>
                       Approve

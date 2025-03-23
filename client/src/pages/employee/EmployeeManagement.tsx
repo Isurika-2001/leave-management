@@ -68,7 +68,7 @@ const EmployeeManagement = (): ReactElement => {
       </Stack>
 
       {/* Table of current employees */}
-      <TableContainer component={Paper} sx={{ borderRadius: 2, overflow: 'hidden' }}>
+      <TableContainer component={Paper} sx={{ borderRadius: 2, overflowX: 'auto', overflowY: 'hidden' }}>
         <Table>
           <TableHead sx={{ bgcolor: 'grey.200' }}>
             <TableRow>

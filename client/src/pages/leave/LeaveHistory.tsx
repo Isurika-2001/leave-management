@@ -204,73 +204,23 @@ const LeaveHistory = () => {
       </Stack>
 
       {/* Table */}
-      <TableContainer component={Paper} sx={{ borderRadius: 2, overflow: 'hidden' }}>
+      <TableContainer component={Paper} sx={{ borderRadius: 2, overflowX: 'auto', overflowY: 'hidden' }}>
         <Table>
-          <TableHead sx={{ bgcolor: 'grey.200' }}>
+          <TableHead sx={{ bgcolor: "grey.200" }}>
             <TableRow>
-              <TableCell>
-                <TableSortLabel
-                  active={sortConfig.key === 'user'}
-                  direction={sortConfig.direction}
-                  onClick={() => handleSortRequest('user')}
-                >
-                  User
-                </TableSortLabel>
-              </TableCell>
-              <TableCell>
-                <TableSortLabel
-                  active={sortConfig.key === 'role'}
-                  direction={sortConfig.direction}
-                  onClick={() => handleSortRequest('role')}
-                >
-                  Role
-                </TableSortLabel>
-              </TableCell>
-              <TableCell>
-                <TableSortLabel
-                  active={sortConfig.key === 'department'}
-                  direction={sortConfig.direction}
-                  onClick={() => handleSortRequest('department')}
-                >
-                  Department
-                </TableSortLabel>
-              </TableCell>
-              <TableCell>
-                <TableSortLabel
-                  active={sortConfig.key === 'leaveType'}
-                  direction={sortConfig.direction}
-                  onClick={() => handleSortRequest('leaveType')}
-                >
-                  Leave Type
-                </TableSortLabel>
-              </TableCell>
-              <TableCell>
-                <TableSortLabel
-                  active={sortConfig.key === 'startDate'}
-                  direction={sortConfig.direction}
-                  onClick={() => handleSortRequest('startDate')}
-                >
-                  Start Date
-                </TableSortLabel>
-              </TableCell>
-              <TableCell>
-                <TableSortLabel
-                  active={sortConfig.key === 'endDate'}
-                  direction={sortConfig.direction}
-                  onClick={() => handleSortRequest('endDate')}
-                >
-                  End Date
-                </TableSortLabel>
-              </TableCell>
-              <TableCell>
-                <TableSortLabel
-                  active={sortConfig.key === 'status'}
-                  direction={sortConfig.direction}
-                  onClick={() => handleSortRequest('status')}
-                >
-                  Status
-                </TableSortLabel>
-              </TableCell>
+              {["user", "role", "department", "leaveType", "startDate", "endDate", "status"].map(
+                (key) => (
+                  <TableCell key={key}>
+                    <TableSortLabel
+                      active={sortConfig.key === key}
+                      direction={sortConfig.direction}
+                      onClick={() => handleSortRequest(key as keyof LeaveData)}
+                    >
+                      {key.charAt(0).toUpperCase() + key.slice(1)}
+                    </TableSortLabel>
+                  </TableCell>
+                )
+              )}
             </TableRow>
           </TableHead>
           <TableBody>

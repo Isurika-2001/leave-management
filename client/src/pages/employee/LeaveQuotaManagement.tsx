@@ -1,5 +1,6 @@
-import { Button, Stack, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, Typography, TableSortLabel } from '@mui/material';
+import { Button, Stack, Typography } from '@mui/material';
 import { ReactElement, useState } from 'react';
+import CustomTable from 'components/base/CustomTable';
 
 // Mock data for employee leave quotas
 const employeesLeaveQuota = [
@@ -10,6 +11,8 @@ const employeesLeaveQuota = [
 ];
 
 const ManageLeaveQuota = (): ReactElement => {
+  const [page, setPage] = useState(0); // Correct placement of useState
+  const [rowsPerPage, setRowsPerPage] = useState(5); // Correct placement of useState
   const [sortDirection, setSortDirection] = useState<'asc' | 'desc'>('asc');
   const [orderBy, setOrderBy] = useState<string>('name'); // Column to sort by
 
@@ -27,6 +30,45 @@ const ManageLeaveQuota = (): ReactElement => {
     }
     return 0; // Sorting by name only
   });
+
+  // Columns definition
+  interface TableColumn {
+    id: string;
+    label: string;
+    sortable: boolean;
+    align: 'left' | 'center' | 'right';
+  }
+  
+  const columns: TableColumn[] = [
+    { id: 'name', label: 'Employee Name', sortable: true, align: 'left' },
+    { id: 'sick', label: 'Sick Leave', sortable: true, align: 'center' },
+    { id: 'annual', label: 'Annual Leave', sortable: true, align: 'center' },
+    { id: 'casual', label: 'Casual Leave', sortable: true, align: 'center' },
+    { id: 'noPay', label: 'No Pay Leave', sortable: true, align: 'center' },
+    { id: 'liue', label: 'Liue Leave', sortable: true, align: 'center' },
+  ];  
+
+  const handleView = (id: number) => {
+    console.log(`Viewing employee with id: ${id}`);
+  };
+
+  const handleEdit = (id: number) => {
+    console.log(`Editing employee with id: ${id}`);
+  };
+
+  // Delete action
+  const handleDelete = (id: number) => {
+    console.log(`Deleted employee with id: ${id}`);
+  };
+
+  const handleChangePage = (_event: unknown, newPage: number) => {
+    setPage(newPage);
+  };  
+  
+  const handleChangeRowsPerPage = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setRowsPerPage(parseInt(event.target.value, 10));
+    setPage(0); // Reset to first page when rows per page change
+  };
 
   return (
     <Stack
@@ -52,52 +94,20 @@ const ManageLeaveQuota = (): ReactElement => {
       </Stack>
 
       {/* Table of employee leave quotas */}
-      <TableContainer component={Paper} sx={{ borderRadius: 2, overflowX: 'auto', overflowY: 'hidden' }}>
-        <Table>
-          <TableHead sx={{ bgcolor: 'grey.200' }}>
-            <TableRow>
-              <TableCell>
-                <TableSortLabel
-                  active={orderBy === 'name'}
-                  direction={orderBy === 'name' ? sortDirection : 'asc'}
-                  onClick={() => handleRequestSort('name')}
-                >
-                  Employee Name
-                </TableSortLabel>
-              </TableCell>
-              <TableCell align="center">Sick Leave</TableCell>
-              <TableCell align="center">Annual Leave</TableCell>
-              <TableCell align="center">Casual Leave</TableCell>
-              <TableCell align="center">No Pay Leave</TableCell>
-              <TableCell align="center">Liue Leave</TableCell>
-              <TableCell align="right"><strong>Actions</strong></TableCell>
-            </TableRow>
-          </TableHead>
-          <TableBody>
-            {sortedLeaveQuotas.map((employee) => (
-              <TableRow key={employee.id}>
-                <TableCell>{employee.name}</TableCell>
-                <TableCell align="center">{employee.sick}</TableCell>
-                <TableCell align="center">{employee.annual}</TableCell>
-                <TableCell align="center">{employee.casual}</TableCell>
-                <TableCell align="center">{employee.noPay}</TableCell>
-                <TableCell align="center">{employee.liue}</TableCell>
-                <TableCell align="right">
-                  <Button variant="contained" color="primary" size="small" sx={{ mr: 1 }}>
-                    View
-                  </Button>
-                  <Button variant="contained" color="secondary" size="small" sx={{ mr: 1 }}>
-                    Edit
-                  </Button>
-                  <Button variant="contained" color="error" size="small">
-                    Delete
-                  </Button>
-                </TableCell>
-              </TableRow>
-            ))}
-          </TableBody>
-        </Table>
-      </TableContainer>
+      <CustomTable
+        columns={columns}
+        data={sortedLeaveQuotas}
+        sortDirection={sortDirection}
+        orderBy={orderBy}
+        handleRequestSort={handleRequestSort}
+        onView={handleView}
+        onEdit={handleEdit}
+        onDelete={handleDelete}
+        rowsPerPage={rowsPerPage}
+        page={page}
+        handleChangePage={handleChangePage}
+        handleChangeRowsPerPage={handleChangeRowsPerPage}
+      />
     </Stack>
   );
 };

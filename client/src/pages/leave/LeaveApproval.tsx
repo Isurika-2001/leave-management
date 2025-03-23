@@ -1,17 +1,9 @@
 import {
   Stack,
   Typography,
-  Table,
-  TableBody,
-  TableCell,
-  TableContainer,
-  TableHead,
-  TableRow,
-  Paper,
-  Button,
-  TableSortLabel,
 } from '@mui/material';
 import { useState } from 'react';
+import CustomTable from 'components/base/CustomTable';
 
 interface LeaveData {
   id: number;
@@ -31,12 +23,15 @@ const PendingLeaveRequests = () => {
     { id: 2, user: 'Alice Brown', role: 'Supervisor', department: 'HR', leaveType: 'Sick Leave', startDate: '2024-04-01', endDate: '2024-04-03', applyDate: '2024-03-10', status: 'Pending' },
   ];
 
+  const [page, setPage] = useState(0);
+  const [rowsPerPage, setRowsPerPage] = useState(5);
+
   const [sortConfig, setSortConfig] = useState<{ key: keyof LeaveData; direction: 'asc' | 'desc' }>({
     key: 'applyDate',
     direction: 'asc',
   });
 
-  const handleSort = (key: keyof LeaveData) => {
+  const handleRequestSort = (key: keyof LeaveData) => {
     setSortConfig((prev) => ({
       key,
       direction: prev.key === key && prev.direction === 'asc' ? 'desc' : 'asc',
@@ -74,6 +69,33 @@ const PendingLeaveRequests = () => {
     console.log(`Declined leave request ID: ${id}`);
   };
 
+  // Columns definition
+  interface TableColumn {
+    id: string;
+    label: string;
+    sortable: boolean;
+    align: 'left' | 'center' | 'right';
+  }
+
+  const columns: TableColumn[] = [
+    { id: 'user', label: 'User', sortable: true, align: 'left' },
+    { id: 'role', label: 'Role', sortable: true, align: 'center' },
+    { id: 'department', label: 'Department', sortable: true, align: 'center' },
+    { id: 'leaveType', label: 'Leave Type', sortable: true, align: 'center' },
+    { id: 'applyDate', label: 'Apply Date', sortable: true, align: 'center' },
+    { id: 'startDate', label: 'Start Date', sortable: true, align: 'center' },
+    { id: 'endDate', label: 'End Date', sortable: true, align: 'center' },
+  ];
+
+  const handleChangePage = (_event: unknown, newPage: number) => {
+    setPage(newPage);
+  };  
+
+  const handleChangeRowsPerPage = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setRowsPerPage(parseInt(event.target.value, 10));
+    setPage(0); // Reset to first page when rows per page change
+  };
+
   return (
     <Stack
       sx={{
@@ -92,66 +114,19 @@ const PendingLeaveRequests = () => {
         Pending Leave Requests
       </Typography>
 
-      {/* Wrapping Box for Horizontal Scroll */}
-      <TableContainer component={Paper} sx={{ borderRadius: 2, overflowX: 'auto', overflowY: 'hidden' }}>
-        <Table sx={{ minWidth: 'max-content' }}>
-          <TableHead sx={{ bgcolor: 'grey.200' }}>
-            <TableRow>
-              {[
-                { label: 'User', key: 'user' },
-                { label: 'Role', key: 'role' },
-                { label: 'Department', key: 'department' },
-                { label: 'Leave Type', key: 'leaveType' },
-                { label: 'Apply Date', key: 'applyDate' },
-                { label: 'Start Date', key: 'startDate' },
-                { label: 'End Date', key: 'endDate' },
-              ].map(({ label, key }) => (
-                <TableCell key={key} sx={{ whiteSpace: 'nowrap' }}>
-                  <TableSortLabel
-                    active={sortConfig.key === key}
-                    direction={sortConfig.direction}
-                    onClick={() => handleSort(key as keyof LeaveData)}
-                  >
-                    <strong>{label}</strong>
-                  </TableSortLabel>
-                </TableCell>
-              ))}
-              <TableCell>
-                <strong>Actions</strong>
-              </TableCell>
-            </TableRow>
-          </TableHead>
-          <TableBody>
-            {sortedData.length > 0 ? (
-              sortedData.map((row) => (
-                <TableRow key={row.id}>
-                  <TableCell>{row.user}</TableCell>
-                  <TableCell>{row.role}</TableCell>
-                  <TableCell>{row.department}</TableCell>
-                  <TableCell>{row.leaveType}</TableCell>
-                  <TableCell sx={{ whiteSpace: 'nowrap' }}>{row.applyDate}</TableCell>
-                  <TableCell sx={{ whiteSpace: 'nowrap' }}>{row.startDate}</TableCell>
-                  <TableCell sx={{ whiteSpace: 'nowrap' }}>{row.endDate}</TableCell>
-                  <TableCell>
-                    <Button variant="contained" color="success" size="small" sx={{ mr: 1 }} onClick={() => handleApprove(row.id)}>
-                      Approve
-                    </Button>
-                    <Button variant="contained" color="error" size="small" onClick={() => handleDecline(row.id)}>
-                      Decline
-                    </Button>
-                  </TableCell>
-                </TableRow>
-              ))
-            ) : (
-              <TableRow>
-                <TableCell colSpan={9} align="center">
-                  No pending requests found
-                </TableCell>
-              </TableRow>
-            )}
-          </TableBody>
-        </Table>
-      </TableContainer>
+      <CustomTable
+        columns={columns}
+        data={sortedData}
+        sortDirection={sortConfig.direction}
+        orderBy={sortConfig.key}
+        handleRequestSort={(key) => handleRequestSort(key as keyof LeaveData)}
+        onDecline={handleDecline}
+        onApprove={handleApprove}
+        rowsPerPage={rowsPerPage}
+        page={page}
+        handleChangePage={handleChangePage}
+        handleChangeRowsPerPage={handleChangeRowsPerPage}
+      />
     </Stack>
   );
 };

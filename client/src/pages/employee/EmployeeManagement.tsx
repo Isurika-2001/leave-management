@@ -1,5 +1,6 @@
-import { Button, Stack, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, Typography, TableSortLabel } from '@mui/material';
+import { Button, Stack, Typography } from '@mui/material';
 import { ReactElement, useState } from 'react';
+import CustomTable from 'components/base/CustomTable';
 
 // Mock data for employees, based on the user schema
 const employees = [
@@ -13,6 +14,8 @@ const EmployeeManagement = (): ReactElement => {
   const [sortDirection, setSortDirection] = useState<'asc' | 'desc'>('asc'); // Sorting direction
   const [orderBy, setOrderBy] = useState<string>('name'); // Column to sort by
   const [employeeList, setEmployeeList] = useState(employees); // Employee list state
+  const [page, setPage] = useState(0); // Current page
+  const [rowsPerPage, setRowsPerPage] = useState(5); // Rows per page
 
   // Sorting function
   const handleRequestSort = (property: string) => {
@@ -44,6 +47,24 @@ const EmployeeManagement = (): ReactElement => {
     setEmployeeList(updatedEmployees);
   };
 
+  // Handle change of page
+  const handleChangePage = (_event: unknown, newPage: number) => {
+    setPage(newPage);
+  };  
+
+  // Handle change of rows per page
+  const handleChangeRowsPerPage = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setRowsPerPage(parseInt(event.target.value, 10));
+    setPage(0); // Reset to first page when rows per page change
+  };
+
+  const columns = [
+    { id: 'name', label: 'Employee Name', sortable: true },
+    { id: 'email', label: 'Email', sortable: true },
+    { id: 'department', label: 'Department', sortable: true },
+    { id: 'role', label: 'Role', sortable: true },
+  ];
+
   return (
     <Stack
       sx={{
@@ -67,75 +88,21 @@ const EmployeeManagement = (): ReactElement => {
         </Button>
       </Stack>
 
-      {/* Table of current employees */}
-      <TableContainer component={Paper} sx={{ borderRadius: 2, overflowX: 'auto', overflowY: 'hidden' }}>
-        <Table>
-          <TableHead sx={{ bgcolor: 'grey.200' }}>
-            <TableRow>
-              <TableCell>
-                <TableSortLabel
-                  active={orderBy === 'name'}
-                  direction={orderBy === 'name' ? sortDirection : 'asc'}
-                  onClick={() => handleRequestSort('name')}
-                >
-                  Employee Name
-                </TableSortLabel>
-              </TableCell>
-              <TableCell>
-                <TableSortLabel
-                  active={orderBy === 'email'}
-                  direction={orderBy === 'email' ? sortDirection : 'asc'}
-                  onClick={() => handleRequestSort('email')}
-                >
-                  Email
-                </TableSortLabel>
-              </TableCell>
-              <TableCell>
-                <TableSortLabel
-                  active={orderBy === 'department'}
-                  direction={orderBy === 'department' ? sortDirection : 'asc'}
-                  onClick={() => handleRequestSort('department')}
-                >
-                  Department
-                </TableSortLabel>
-              </TableCell>
-              <TableCell>
-                <TableSortLabel
-                  active={orderBy === 'role'}
-                  direction={orderBy === 'role' ? sortDirection : 'asc'}
-                  onClick={() => handleRequestSort('role')}
-                >
-                  Role
-                </TableSortLabel>
-              </TableCell>
-              <TableCell align="right"><strong>Actions</strong></TableCell>
-            </TableRow>
-          </TableHead>
-          <TableBody>
-            {sortedEmployees.map((employee) => (
-              <TableRow key={employee.id}>
-                <TableCell>{employee.name}</TableCell>
-                <TableCell>{employee.email}</TableCell>
-                <TableCell>{employee.department}</TableCell>
-                <TableCell>{employee.role}</TableCell>
-                <TableCell align="right">
-                  <Button variant="contained" color="primary" size="small" sx={{ mr: 1 }}>
-                    Edit
-                  </Button>
-                  <Button
-                    variant="contained"
-                    color="error"
-                    size="small"
-                    onClick={() => handleDelete(employee.id)}
-                  >
-                    Delete
-                  </Button>
-                </TableCell>
-              </TableRow>
-            ))}
-          </TableBody>
-        </Table>
-      </TableContainer>
+      {/* Custom Table for Employees */}
+      <CustomTable
+        columns={columns}
+        data={sortedEmployees}
+        sortDirection={sortDirection}
+        orderBy={orderBy}
+        handleRequestSort={handleRequestSort}
+        onDelete={handleDelete}
+        // on edit by id
+        onEdit={(id) => console.log(`Editing employee with id: ${id}`)}
+        rowsPerPage={rowsPerPage}
+        page={page}
+        handleChangePage={handleChangePage}
+        handleChangeRowsPerPage={handleChangeRowsPerPage}
+      />
     </Stack>
   );
 };

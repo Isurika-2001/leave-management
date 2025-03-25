@@ -122,6 +122,7 @@ const PendingLeaveRequests = () => {
         handleRequestSort={(key) => handleRequestSort(key as keyof LeaveData)}
         onDecline={handleDecline}
         onApprove={handleApprove}
+        onView={(id) => console.log(`View leave request ID: ${id}`)}
         rowsPerPage={rowsPerPage}
         page={page}
         handleChangePage={handleChangePage}

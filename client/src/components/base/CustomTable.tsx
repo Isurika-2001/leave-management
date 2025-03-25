@@ -79,7 +79,7 @@ const CustomTable: FC<TableProps> = ({
                   </Button>
                 )}
                 {onEdit && (
-                  <Button variant="contained" color="secondary" size="small" sx={{ mr: 1 }} onClick={() => onEdit(row.id)}>
+                  <Button variant="contained" color="info" size="small" sx={{ mr: 1 }} onClick={() => onEdit(row.id)}>
                     Edit
                   </Button>
                 )}
@@ -94,7 +94,7 @@ const CustomTable: FC<TableProps> = ({
                   </Button>
                 )}
                 {onApprove && (
-                  <Button variant="contained" color="success" size="small" onClick={() => onApprove(row.id)}>
+                  <Button variant="contained" color="secondary" size="small" sx={{ mr: 1 }} onClick={() => onApprove(row.id)}>
                     Approve
                   </Button>
                 )}

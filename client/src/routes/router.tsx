@@ -38,6 +38,7 @@ const ForgotPassword = lazy(async () => import('pages/authentication/ForgotPassw
 const LeaveRequest = lazy(() => import('pages/leave/LeaveRequest'));
 const LeaveHistory = lazy(() => import('pages/leave/LeaveHistory'));
 const LeaveApproval = lazy(() => import('pages/leave/LeaveApproval'));
+const LeaveApprovalView = lazy(() => import('pages/leave/LeaveApprovalView'));
 
 const DepartmentManagement = lazy(() => import('pages/department/DepartmentManagement'));
 const EmployeeManagement = lazy(() => import('pages/employee/EmployeeManagement'));
@@ -65,6 +66,8 @@ const routes: RouteObject[] = [
           { path: paths.leaveRequest, element: <LeaveRequest /> },
           { path: paths.leaveHistory, element: <LeaveHistory /> },
           { path: paths.leaveApproval, element: <LeaveApproval /> },
+          { path: paths.leaveApprovalView, element: <LeaveApprovalView /> },
+
           { path: paths.departmentManagement, element: <DepartmentManagement /> },
           { path: paths.employeeManagement, element: <EmployeeManagement /> },
           { path: paths.leaveQuotaManagement, element: <LeaveQuotaManagement /> },

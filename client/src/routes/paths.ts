@@ -23,6 +23,7 @@ export default {
   leaveRequest: `/${rootPaths.leaveRoot}/leave-request`,
   leaveHistory: `/${rootPaths.leaveRoot}/leave-history`,
   leaveApproval: `/${rootPaths.leaveRoot}/leave-approval`,
+  leaveApprovalView: `/${rootPaths.leaveRoot}/leave-approval/:id`,
   departmentManagement: `/${rootPaths.departmentRoot}/department-management`,  // Updated path for department
   employeeManagement: `/${rootPaths.employeeRoot}/employee-management`,  // Updated path for employee
   leaveQuotaManagement: `/${rootPaths.employeeRoot}/leave-quota-management`,  // Updated path for leave-quota under employee

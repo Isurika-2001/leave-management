@@ -11,7 +11,7 @@ import {
 import { ReactElement, useState } from 'react';
 
 const LeaveRequest = (): ReactElement => {
-  const [leaveType, setLeaveType] = useState('');
+  const [leaveType, setLeaveType] = useState<string | number>(''); // Fixed state type
   const [startDate, setStartDate] = useState('');
   const [endDate, setEndDate] = useState('');
   const [reason, setReason] = useState('');
@@ -61,7 +61,7 @@ const LeaveRequest = (): ReactElement => {
       setEndDate('');
       setReason('');
     } catch (err) {
-      setError(err.message || 'An error occurred');
+      setError((err as Error).message || 'An error occurred'); // Type assertion for error
     } finally {
       setIsSubmitting(false);
     }
@@ -143,7 +143,7 @@ const LeaveRequest = (): ReactElement => {
           onClick={handleLeaveRequest}
           disabled={isSubmitting}
           sx={{
-            borderRadius: 2,
+            borderRadius: 10,
             boxShadow: (theme) => theme.shadows[2],
             '&:hover': {
               bgcolor: 'primary.dark',

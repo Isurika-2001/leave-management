@@ -19,7 +19,7 @@ const LeaveQuotaPage = (): ReactElement => {
   // Dummy employee data
   const employeeData = {
     employeeName: 'John Doe',
-    email: 'johndoe@gmail.com',
+    email: 'john.doe@example.com',
     department: 'Sales',
     accountType: 'User',
   };

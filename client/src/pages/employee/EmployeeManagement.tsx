@@ -104,7 +104,9 @@ const EmployeeManagement = (): ReactElement => {
         handleRequestSort={handleRequestSort}
         onDelete={handleDelete}
         // on edit by id
-        onEdit={(id) => console.log(`Editing employee with id: ${id}`)}
+        onEdit={(id => {
+          navigate(`/employee/update-employee/${id}`); // This will navigate to /:id page
+        })}
         rowsPerPage={rowsPerPage}
         page={page}
         handleChangePage={handleChangePage}

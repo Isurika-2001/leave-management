@@ -47,6 +47,7 @@ const CreateEmployee = (): ReactElement => {
       ...prev,
       [name]: value,
     }));
+    setError(''); // Clear error when user changes input
   };
 
   const handleCreateEmployee = async () => {

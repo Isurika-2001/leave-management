@@ -33,6 +33,7 @@ const LeaveQuotaPage = (): ReactElement => {
       ...prev,
       [name]: value,
     }));
+    setError(''); // Clear error when user changes input
   };
 
   const handleSubmit = async (data: any) => {

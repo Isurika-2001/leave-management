@@ -47,6 +47,7 @@ const EditEmployee = (): ReactElement => {
       ...prev,
       [name]: value,
     }));
+    setError(''); // Clear error when user changes input
   };
 
   const handleUpdateEmployee = async () => {

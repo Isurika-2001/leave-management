@@ -104,6 +104,6 @@ const routes: RouteObject[] = [
   },
 ];
 
-const router = createBrowserRouter(routes, { basename: '/elegent' });
+const router = createBrowserRouter(routes, { basename: '/LeaveEase' });
 
 export default router;

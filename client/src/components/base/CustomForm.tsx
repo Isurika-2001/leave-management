@@ -12,6 +12,8 @@ interface Field {
   multiline?: boolean;
   rows?: number;
   disabled?: boolean;
+  minDate?: string; // Optional min date
+  maxDate?: string; // Optional max date
 }
 
 interface Section {
@@ -112,6 +114,10 @@ const CustomForm = ({ sections, onSubmit, isSubmitting, error, showSubmitButton 
                     value={field.value}
                     onChange={(e) => handleTextFieldChange(e, field)}
                     fullWidth
+                    inputProps={{
+                      min: field.minDate || undefined,
+                      max: field.maxDate || undefined,
+                    }}
                     InputLabelProps={{ shrink: true }}
                   />
                 );
@@ -126,6 +132,23 @@ const CustomForm = ({ sections, onSubmit, isSubmitting, error, showSubmitButton 
                     label={field.label}
                     variant="outlined"
                     type="password"
+                    value={field.value}
+                    onChange={(e) => handleTextFieldChange(e, field)}
+                    fullWidth
+                    InputLabelProps={{ shrink: true }}
+                  />
+                );
+              }
+
+              // handle time field
+              if (field.type === 'time') {
+                return (
+                  <TextField
+                    name={field.name}
+                    key={index}
+                    label={field.label}
+                    variant="outlined"
+                    type="time"
                     value={field.value}
                     onChange={(e) => handleTextFieldChange(e, field)}
                     fullWidth

@@ -7,6 +7,8 @@ interface LeaveRequestData {
   leaveType: string;
   startDate: string;
   endDate: string;
+  startTime: string;
+  endTime: string;
   reason: string;
 }
 
@@ -15,6 +17,8 @@ const LeaveRequest = (): ReactElement => {
     leaveType: '',
     startDate: '',
     endDate: '',
+    startTime: '',
+    endTime: '',
     reason: '',
   });
 
@@ -27,6 +31,8 @@ const LeaveRequest = (): ReactElement => {
     { label: 'Vacation Leave', value: 'vacation' },
     { label: 'Maternity Leave', value: 'maternity' },
     { label: 'Paternity Leave', value: 'paternity' },
+    { label: 'Half Day Leave', value: 'half-day' },
+    { label: 'Short Leave', value: 'short' },
   ];
 
   const handleChange = (
@@ -37,11 +43,37 @@ const LeaveRequest = (): ReactElement => {
       ...prev,
       [name]: value,
     }));
+    setError(''); // Clear error when user changes input
+  };
+
+  // Validate time difference for Short Leave and Half Day Leave
+  const validateLeaveTimes = () => {
+    if (leaveRequest.leaveType === 'short' || leaveRequest.leaveType === 'half-day') {
+      const startTime = new Date(`1970-01-01T${leaveRequest.startTime}:00`);
+      const endTime = new Date(`1970-01-01T${leaveRequest.endTime}:00`);
+      const timeDiff = (endTime.getTime() - startTime.getTime()) / (1000 * 60 * 60); // Convert to hours
+
+      if (leaveRequest.leaveType === 'short' && timeDiff > 2) {
+        setError('Short Leave cannot exceed 2 hours.');
+        return false;
+      }
+
+      if (leaveRequest.leaveType === 'half-day' && timeDiff > 4) {
+        setError('Half Day Leave cannot exceed 4 hours.');
+        return false;
+      }
+    }
+    setError('');
+    return true;
   };
 
   const handleLeaveRequest = async () => {
-    if (!leaveRequest.leaveType || !leaveRequest.startDate || !leaveRequest.endDate || !leaveRequest.reason) {
+    if (!leaveRequest.leaveType || !leaveRequest.startDate || !leaveRequest.reason) {
       setError('Please fill in all fields');
+      return;
+    }
+
+    if (!validateLeaveTimes()) {
       return;
     }
 
@@ -68,6 +100,8 @@ const LeaveRequest = (): ReactElement => {
         leaveType: '',
         startDate: '',
         endDate: '',
+        startTime: '',
+        endTime: '',
         reason: '',
       });
     } catch (err) {
@@ -81,7 +115,7 @@ const LeaveRequest = (): ReactElement => {
   const sections = [
     {
       title: 'Leave Request Details',
-      fields : [
+      fields: [
         {
           name: 'leaveType',
           label: 'Leave Type',
@@ -98,15 +132,41 @@ const LeaveRequest = (): ReactElement => {
           value: leaveRequest.startDate,
           onChange: handleChange,
           fullWidth: true,
+          minDate: leaveRequest.leaveType === 'sick' || leaveRequest.leaveType === 'half-day' || leaveRequest.leaveType === 'short' 
+            ? new Date().toISOString().split('T')[0] 
+            : new Date(new Date().setDate(new Date().getDate() + 2)).toISOString().split('T')[0],
         },
-        {
-          name: 'endDate',
-          label: 'End Date',
-          type: 'date',
-          value: leaveRequest.endDate,
-          onChange: handleChange,
-          fullWidth: true,
-        },
+        ...(leaveRequest.leaveType === 'half-day' || leaveRequest.leaveType === 'short' 
+          ? [
+            {
+              name: 'startTime',
+              label: 'Start Time',
+              type: 'time',
+              value: leaveRequest.startTime,
+              onChange: handleChange,
+              fullWidth: true,
+            },
+            {
+              name: 'endTime',
+              label: 'End Time',
+              type: 'time',
+              value: leaveRequest.endTime,
+              onChange: handleChange,
+              fullWidth: true,
+            },
+          ] 
+          : [
+            {
+              name: 'endDate',
+              label: 'End Date',
+              type: 'date',
+              value: leaveRequest.endDate,
+              onChange: handleChange,
+              fullWidth: true,
+              minDate: leaveRequest.startDate,
+              maxDate: leaveRequest.leaveType === 'sick' ? new Date(new Date().setDate(new Date().getDate() + 7)).toISOString().split('T')[0] : new Date(new Date().setDate(new Date().getDate() + 14)).toISOString().split('T')[0],
+            },
+          ]),
         {
           name: 'reason',
           label: 'Reason',

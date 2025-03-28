@@ -5,12 +5,12 @@
 <!-- PROJECT LOGO -->
 <div align="left" >
 <center>
-      <a href="public/elegent-logo.png" align="center">
-        <img src="public/elegent-logo.png" alt="Logo" width="50" height="50">
+      <a href="public/LeaveEase-logo.png" align="center">
+        <img src="public/LeaveEase-logo.png" alt="Logo" width="50" height="50">
       </a>    
 </center>
 <center>
-       <h1 style="display: inline-block; margin-left: 10px;">Elegent Admin Dashboard</h1>
+       <h1 style="display: inline-block; margin-left: 10px;">LeaveEase Admin Dashboard</h1>
 </center>
 </div>
 <br />
@@ -73,11 +73,11 @@ Follow these steps to get your project up and running:
 
 1. **Clone the repository**
    ```sh
-   git clone https://github.com/themewagon/elegent.git
+   git clone https://github.com/themewagon/LeaveEase.git
    ```
 2. **Navigate to the project directory**
    ```sh
-   cd elegent
+   cd LeaveEase
    ```
 3. **Install dependencies**
    ```sh
@@ -87,7 +87,7 @@ Follow these steps to get your project up and running:
    ```sh
    npm run dev
    ```
-   Open your web browser and navigate to http://localhost:3000/elegent to view this application.
+   Open your web browser and navigate to http://localhost:3000/LeaveEase to view this application.
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
@@ -101,8 +101,8 @@ Distributed under the MIT License. See `LICENSE.txt` for more information.
 
 <a name="readme-top">
 <div align="">
-<a align="center" href="https://github.com/themewagon/elegent/graphs/contributors">
-<img src="https://contrib.rocks/image?repo=themewagon/elegent" /><br />
+<a align="center" href="https://github.com/themewagon/LeaveEase/graphs/contributors">
+<img src="https://contrib.rocks/image?repo=themewagon/LeaveEase" /><br />
 </a></a></div>
 
 <!-- MARKDOWN LINKS & IMAGES -->

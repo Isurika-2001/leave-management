@@ -2,7 +2,6 @@ import { ReactElement, useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import CustomForm from 'components/base/CustomForm'; // Import CustomForm component
 import { Button, Box, Typography, Stack } from '@mui/material';
-import { SelectChangeEvent } from '@mui/material/Select';
 
 interface LeaveData {
   id: number;
@@ -81,86 +80,78 @@ const LeaveApprovalView = (): ReactElement => {
     return <Typography color="error">No leave request found or loading...</Typography>;
   }
 
-  const handleChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement> | SelectChangeEvent<string | number>
-  ) => {
-    const { name, value } = e.target;
-  
-    // Update the leave state based on the name of the field
-    setLeave((prev) => {
-      if (!prev) return prev;
-  
-      return {
-        ...prev,
-        [name]: value,
-      };
-    });
-  };
-
-  // Define the fields for the form
   const fields = [
     {
       name: 'user',
       label: 'User',
       type: 'text',
       value: leave.user,
-      onChange: handleChange,
+      onChange: () => {},
+      disabled: true, // Disable all fields
     },
     {
       name: 'role',
       label: 'Role',
       type: 'text',
       value: leave.role,
-      onChange: handleChange,
+      onChange: () => {},
+      disabled: true,
     },
     {
       name: 'department',
       label: 'Department',
       type: 'text',
       value: leave.department,
-      onChange: handleChange,
+      onChange: () => {},
+      disabled: true,
     },
     {
       name: 'leaveType',
       label: 'Leave Type',
       type: 'text',
       value: leave.leaveType,
-      onChange: handleChange,
+      onChange: () => {},
+      disabled: true,
     },
     {
       name: 'startDate',
       label: 'Start Date',
       type: 'date',
       value: leave.startDate,
-      onChange: handleChange,
+      onChange: () => {},
+      disabled: true,
     },
     {
       name: 'endDate',
       label: 'End Date',
       type: 'date',
       value: leave.endDate,
-      onChange: handleChange,
+      onChange: () => {},
+      disabled: true,
     },
     {
       name: 'applyDate',
       label: 'Apply Date',
       type: 'date',
       value: leave.applyDate,
-      onChange: handleChange,
+      onChange: () => {},
+      disabled: true,
     },
     {
       name: 'status',
       label: 'Status',
       type: 'text',
       value: leave.status,
-      onChange: handleChange,
+      onChange: () => {},
+      disabled: true,
     },
     {
       name: 'description',
       label: 'Description',
       type: 'textarea',
       value: leave.description,
-      onChange: handleChange,
+      onChange: () => {},
+      disabled: true,
     },
   ];
 
@@ -189,16 +180,16 @@ const LeaveApprovalView = (): ReactElement => {
             onClick={() => handleApproval('approved')}
             disabled={isSubmitting}
           >
-            {isSubmitting ? 'Submitting...' : 'Approve'}
+            Approve
           </Button>
           <Button
             variant="contained"
             color="error"
             fullWidth
-            onClick={() => handleApproval('declined')}
+            onClick={() => handleApproval('rejected')}
             disabled={isSubmitting}
           >
-            {isSubmitting ? 'Submitting...' : 'Decline'}
+            Reject
           </Button>
         </Stack>
       </Stack>

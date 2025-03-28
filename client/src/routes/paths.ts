@@ -27,6 +27,7 @@ export default {
   departmentManagement: `/${rootPaths.departmentRoot}/department-management`,
   employeeManagement: `/${rootPaths.employeeRoot}/employee-management`,
   createEmployee: `/${rootPaths.employeeRoot}/create-employee`,
+  employeeLeaveQuota: `/${rootPaths.employeeRoot}/leave-quota/:id`, 
   leaveQuotaManagement: `/${rootPaths.employeeRoot}/leave-quota-management`,
   notFound: `/${rootPaths.errorRoot}/404`,
 };

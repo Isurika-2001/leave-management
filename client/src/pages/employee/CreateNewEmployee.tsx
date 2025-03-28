@@ -8,6 +8,8 @@ interface EmployeeData {
   email: string;
   department: string;
   accountType: string;
+  password: string;
+  confirmPassword: string;
 }
 
 const CreateEmployee = (): ReactElement => {
@@ -16,6 +18,8 @@ const CreateEmployee = (): ReactElement => {
     email: '',
     department: '',
     accountType: '',
+    password: '',
+    confirmPassword: '',
   });
 
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -75,6 +79,8 @@ const CreateEmployee = (): ReactElement => {
         email: '',
         department: '',
         accountType: '',
+        password: '',
+        confirmPassword: '',
       });
     } catch (err) {
       setError((err as Error).message || 'An error occurred');
@@ -83,41 +89,66 @@ const CreateEmployee = (): ReactElement => {
     }
   };
 
-  // Define the fields for the form
-  const fields = [
+  const sections = [
     {
-      name: 'employeeName',
-      label: 'Employee Name',
-      type: 'text',
-      value: employee.employeeName,
-      onChange: handleChange,
-      fullWidth: true,
+      title: 'Employee Details',
+      fields: [
+        {
+          name: 'employeeName',
+          label: 'Employee Name',
+          type: 'text',
+          value: employee.employeeName,
+          onChange: handleChange,
+          fullWidth: true,
+        },
+        {
+          name: 'email',
+          label: 'Email',
+          type: 'email',
+          value: employee.email,
+          onChange: handleChange,
+          fullWidth: true,
+        },
+        {
+          name: 'department',
+          label: 'Department',
+          type: 'select',
+          value: employee.department,
+          onChange: handleChange,
+          options: departmentOptions,
+          fullWidth: true,
+        },
+        {
+          name: 'accountType',
+          label: 'Account Type',
+          type: 'select',
+          value: employee.accountType,
+          onChange: handleChange,
+          options: accountTypeOptions,
+          fullWidth: true,
+        },
+      ],
     },
     {
-      name: 'email',
-      label: 'Email',
-      type: 'email',
-      value: employee.email,
-      onChange: handleChange,
-      fullWidth: true,
-    },
-    {
-      name: 'department',
-      label: 'Department',
-      type: 'select',
-      value: employee.department,
-      onChange: handleChange,
-      options: departmentOptions,
-      fullWidth: true,
-    },
-    {
-      name: 'accountType',
-      label: 'Account Type',
-      type: 'select',
-      value: employee.accountType,
-      onChange: handleChange,
-      options: accountTypeOptions,
-      fullWidth: true,
+      title: 'Password Manager',
+      fields: [
+        {
+          name: 'password',
+          label: 'Password',
+          type: 'password',
+          value: employee.password,
+          onChange: handleChange,
+          fullWidth: true,
+        },
+        {
+          name: 'confirmPassword',
+          label: 'Confirm Password',
+          type: 'password',
+          value: employee.confirmPassword,
+          onChange: handleChange,
+          fullWidth: true,
+        },
+      ],
     },
   ];
 
@@ -131,7 +162,7 @@ const CreateEmployee = (): ReactElement => {
         {/* Render CustomForm with the fields and handlers, without the submit button */}
         <CustomForm
           onSubmit={(data) => console.log('Form submitted with data:', data)}
-          fields={fields}
+          sections={sections}
           isSubmitting={isSubmitting}
           error={error}
           showSubmitButton={false}

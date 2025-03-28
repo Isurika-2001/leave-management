@@ -80,80 +80,85 @@ const LeaveApprovalView = (): ReactElement => {
     return <Typography color="error">No leave request found or loading...</Typography>;
   }
 
-  const fields = [
+  const sections = [
     {
-      name: 'user',
-      label: 'User',
-      type: 'text',
-      value: leave.user,
-      onChange: () => {},
-      disabled: true, // Disable all fields
-    },
-    {
-      name: 'role',
-      label: 'Role',
-      type: 'text',
-      value: leave.role,
-      onChange: () => {},
-      disabled: true,
-    },
-    {
-      name: 'department',
-      label: 'Department',
-      type: 'text',
-      value: leave.department,
-      onChange: () => {},
-      disabled: true,
-    },
-    {
-      name: 'leaveType',
-      label: 'Leave Type',
-      type: 'text',
-      value: leave.leaveType,
-      onChange: () => {},
-      disabled: true,
-    },
-    {
-      name: 'startDate',
-      label: 'Start Date',
-      type: 'date',
-      value: leave.startDate,
-      onChange: () => {},
-      disabled: true,
-    },
-    {
-      name: 'endDate',
-      label: 'End Date',
-      type: 'date',
-      value: leave.endDate,
-      onChange: () => {},
-      disabled: true,
-    },
-    {
-      name: 'applyDate',
-      label: 'Apply Date',
-      type: 'date',
-      value: leave.applyDate,
-      onChange: () => {},
-      disabled: true,
-    },
-    {
-      name: 'status',
-      label: 'Status',
-      type: 'text',
-      value: leave.status,
-      onChange: () => {},
-      disabled: true,
-    },
-    {
-      name: 'description',
-      label: 'Description',
-      type: 'textarea',
-      value: leave.description,
-      onChange: () => {},
-      disabled: true,
-    },
-  ];
+      title: 'Leave Request Details',
+      fields : [
+        {
+          name: 'user',
+          label: 'User',
+          type: 'text',
+          value: leave.user,
+          onChange: () => {},
+          disabled: true, // Disable all fields
+        },
+        {
+          name: 'role',
+          label: 'Role',
+          type: 'text',
+          value: leave.role,
+          onChange: () => {},
+          disabled: true,
+        },
+        {
+          name: 'department',
+          label: 'Department',
+          type: 'text',
+          value: leave.department,
+          onChange: () => {},
+          disabled: true,
+        },
+        {
+          name: 'leaveType',
+          label: 'Leave Type',
+          type: 'text',
+          value: leave.leaveType,
+          onChange: () => {},
+          disabled: true,
+        },
+        {
+          name: 'startDate',
+          label: 'Start Date',
+          type: 'date',
+          value: leave.startDate,
+          onChange: () => {},
+          disabled: true,
+        },
+        {
+          name: 'endDate',
+          label: 'End Date',
+          type: 'date',
+          value: leave.endDate,
+          onChange: () => {},
+          disabled: true,
+        },
+        {
+          name: 'applyDate',
+          label: 'Apply Date',
+          type: 'date',
+          value: leave.applyDate,
+          onChange: () => {},
+          disabled: true,
+        },
+        {
+          name: 'status',
+          label: 'Status',
+          type: 'text',
+          value: leave.status,
+          onChange: () => {},
+          disabled: true,
+        },
+        {
+          name: 'description',
+          label: 'Description',
+          type: 'textarea',
+          value: leave.description,
+          onChange: () => {},
+          disabled: true,
+        },
+      ],
+    }, 
+];
 
   return (
     <Box display="flex" justifyContent="center" width="100%" p={3}>
@@ -165,7 +170,7 @@ const LeaveApprovalView = (): ReactElement => {
         {/* Render CustomForm with the fields and handlers, without the submit button */}
         <CustomForm
           onSubmit={(data) => console.log('Form submitted with data:', data)}
-          fields={fields}
+          sections={sections}
           isSubmitting={isSubmitting}
           error={error}
           showSubmitButton={false}

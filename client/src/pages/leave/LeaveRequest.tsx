@@ -78,40 +78,45 @@ const LeaveRequest = (): ReactElement => {
   };
 
   // Define the fields for the form
-  const fields = [
+  const sections = [
     {
-      name: 'leaveType',
-      label: 'Leave Type',
-      type: 'select',
-      value: leaveRequest.leaveType,
-      onChange: handleChange,
-      options: leaveOptions,
-      fullWidth: true,
-    },
-    {
-      name: 'startDate',
-      label: 'Start Date',
-      type: 'date',
-      value: leaveRequest.startDate,
-      onChange: handleChange,
-      fullWidth: true,
-    },
-    {
-      name: 'endDate',
-      label: 'End Date',
-      type: 'date',
-      value: leaveRequest.endDate,
-      onChange: handleChange,
-      fullWidth: true,
-    },
-    {
-      name: 'reason',
-      label: 'Reason',
-      type: 'textarea',
-      value: leaveRequest.reason,
-      onChange: handleChange,
-      fullWidth: true,
-    },
+      title: 'Leave Request Details',
+      fields : [
+        {
+          name: 'leaveType',
+          label: 'Leave Type',
+          type: 'select',
+          value: leaveRequest.leaveType,
+          onChange: handleChange,
+          options: leaveOptions,
+          fullWidth: true,
+        },
+        {
+          name: 'startDate',
+          label: 'Start Date',
+          type: 'date',
+          value: leaveRequest.startDate,
+          onChange: handleChange,
+          fullWidth: true,
+        },
+        {
+          name: 'endDate',
+          label: 'End Date',
+          type: 'date',
+          value: leaveRequest.endDate,
+          onChange: handleChange,
+          fullWidth: true,
+        },
+        {
+          name: 'reason',
+          label: 'Reason',
+          type: 'textarea',
+          value: leaveRequest.reason,
+          onChange: handleChange,
+          fullWidth: true,
+        },
+      ],
+    }, 
   ];
 
   return (
@@ -124,7 +129,7 @@ const LeaveRequest = (): ReactElement => {
         {/* Render CustomForm with the fields and handlers, without the submit button */}
         <CustomForm
           onSubmit={(data) => console.log('Form submitted with data:', data)}
-          fields={fields}
+          sections={sections}
           isSubmitting={isSubmitting}
           error={error}
           showSubmitButton={false}

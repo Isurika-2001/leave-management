@@ -43,7 +43,9 @@ const LeaveApprovalView = lazy(() => import('pages/leave/LeaveApprovalView'));
 const DepartmentManagement = lazy(() => import('pages/department/DepartmentManagement'));
 const EmployeeManagement = lazy(() => import('pages/employee/EmployeeManagement'));
 const CreateEmployee = lazy(() => import('pages/employee/CreateNewEmployee'));
+
 const LeaveQuotaManagement = lazy(() => import('pages/employee/LeaveQuotaManagement'));
+const EmployeeLeaveQuota = lazy(() => import('pages/employee/EmployeeLeaveQuota'));
 
 const routes: RouteObject[] = [
   {
@@ -74,6 +76,7 @@ const routes: RouteObject[] = [
           
           { path: paths.employeeManagement, element: <EmployeeManagement /> },
           { path: paths.createEmployee, element: <CreateEmployee /> },
+          { path: paths.employeeLeaveQuota, element: <EmployeeLeaveQuota /> }, 
           { path: paths.leaveQuotaManagement, element: <LeaveQuotaManagement /> },
         ],
       },

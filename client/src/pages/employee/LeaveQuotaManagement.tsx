@@ -1,5 +1,6 @@
-import { Button, Stack, Typography } from '@mui/material';
+import { Stack, Typography } from '@mui/material';
 import { ReactElement, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import CustomTable from 'components/base/CustomTable';
 
 // Mock data for employee leave quotas
@@ -47,18 +48,10 @@ const ManageLeaveQuota = (): ReactElement => {
     { id: 'noPay', label: 'No Pay Leave', sortable: true, align: 'center' },
     { id: 'liue', label: 'Liue Leave', sortable: true, align: 'center' },
   ];  
-
-  const handleView = (id: number) => {
-    console.log(`Viewing employee with id: ${id}`);
-  };
-
+  
+  const navigate = useNavigate();
   const handleEdit = (id: number) => {
-    console.log(`Editing employee with id: ${id}`);
-  };
-
-  // Delete action
-  const handleDelete = (id: number) => {
-    console.log(`Deleted employee with id: ${id}`);
+    navigate(`/employee/leave-quota/${id}`); 
   };
 
   const handleChangePage = (_event: unknown, newPage: number) => {
@@ -88,9 +81,6 @@ const ManageLeaveQuota = (): ReactElement => {
         <Typography variant="subtitle1" color="text.primary">
           Manage Leave Quota
         </Typography>
-        <Button variant="contained" color="primary" sx={{ maxWidth: 200 }}>
-          Create New Quota
-        </Button>
       </Stack>
 
       {/* Table of employee leave quotas */}
@@ -100,9 +90,7 @@ const ManageLeaveQuota = (): ReactElement => {
         sortDirection={sortDirection}
         orderBy={orderBy}
         handleRequestSort={handleRequestSort}
-        onView={handleView}
         onEdit={handleEdit}
-        onDelete={handleDelete}
         rowsPerPage={rowsPerPage}
         page={page}
         handleChangePage={handleChangePage}

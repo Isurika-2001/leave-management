@@ -14,12 +14,12 @@ interface EmployeeData {
 
 const EditEmployee = (): ReactElement => {
   const [employee, setEmployee] = useState<EmployeeData>({
-    employeeName: 'John Doe',    // Dummy data
-    email: 'john.doe@example.com',  // Dummy data
-    department: 'engineering',     // Dummy data
-    accountType: 'admin',        // Dummy data
-    password: '',     // Dummy data
-    confirmPassword: '',  // Dummy data
+    employeeName: 'John Doe', 
+    email: 'john.doe@example.com',
+    department: 'engineering',  
+    accountType: 'admin',     
+    password: '',  
+    confirmPassword: '',
   });
 
   const [isSubmitting, setIsSubmitting] = useState(false);

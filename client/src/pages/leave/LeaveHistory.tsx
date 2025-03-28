@@ -1,23 +1,16 @@
 import {
   Stack,
   Typography,
-  Table,
-  TableBody,
-  TableCell,
-  TableContainer,
-  TableHead,
-  TableRow,
-  Paper,
   TextField,
   MenuItem,
   Select,
   FormControl,
   InputLabel,
   Chip,
-  TableSortLabel,
 } from '@mui/material';
 import { useState } from 'react';
 import { SelectChangeEvent } from '@mui/material';
+import CustomTable from 'components/base/CustomTable';
 
 // Define the type for Leave Data
 interface LeaveData {
@@ -38,6 +31,9 @@ const LeaveHistory = () => {
     { id: 3, user: 'Mike Johnson', role: 'Supervisor', department: 'Marketing', leaveType: 'Vacation Leave', startDate: '2024-04-10', endDate: '2024-04-20', status: 'Rejected' },
   ];
 
+  const [page, setPage] = useState(0);
+  const [rowsPerPage, setRowsPerPage] = useState(5);
+
   const [filters, setFilters] = useState({
     fromDate: '',
     toDate: '',
@@ -51,6 +47,52 @@ const LeaveHistory = () => {
     key: 'user',
     direction: 'asc',
   });
+
+  // Columns definition
+  interface TableColumn {
+    id: string;
+    label: string;
+    sortable?: boolean;
+    align: 'left' | 'right' | 'center';
+    render?: (row: any) => JSX.Element;
+  }
+  
+  const columns: TableColumn[] = [
+    { id: 'user', label: 'User', sortable: true, align: 'left' },
+    { id: 'role', label: 'Role', sortable: true, align: 'left' },
+    { id: 'department', label: 'Department', sortable: true, align: 'left' },
+    { id: 'leaveType', label: 'Leave Type', sortable: true, align: 'left' },
+    { id: 'startDate', label: 'Start Date', sortable: true, align: 'left' },
+    { id: 'endDate', label: 'End Date', sortable: true, align: 'left' },
+    { 
+      id: 'status', 
+      label: 'Status', 
+      sortable: false, 
+      align: 'left',
+      render: (row: LeaveData) => {
+        console.log("Rendering Chip for:", row.status);
+        return (
+          <Chip
+            label={row.status}
+            sx={{
+              backgroundColor: getStatusChip(row.status),
+              color: 'white',
+              fontWeight: 'bold',
+            }}
+          />
+        );
+      }      
+    },    
+  ];
+
+  const handleChangePage = (_event: unknown, newPage: number) => {
+    setPage(newPage);
+  };
+
+  const handleChangeRowsPerPage = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setRowsPerPage(parseInt(event.target.value, 10));
+    setPage(0); // Reset to first page when rows per page change
+  };
 
   // Separate event handler for TextField (Date fields or input fields)
   const handleTextFieldChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -93,27 +135,25 @@ const LeaveHistory = () => {
     );
   });
 
-  // Function to get colored status chip
-  const getStatusChip = (status: string) => {
-    const statusColors: Record<string, { label: string; color: 'success' | 'warning' | 'error' }> = {
-      Approved: { label: 'Approved', color: 'success' },
-      Pending: { label: 'Pending', color: 'warning' },
-      Rejected: { label: 'Rejected', color: 'error' },
-    };
-
-    return (
-      <Chip
-        label={statusColors[status]?.label || status}
-        color={statusColors[status]?.color}
-        sx={{ fontWeight: 600 }}
-      />
-    );
+  // Function to get color code for status chip
+  const getStatusChip = (status: string): string => {
+    switch (status.toLowerCase()) { // Convert status to lowercase to ensure matching
+      case 'approved':
+        return '#4CAF50';  // Green for approved
+      case 'pending':
+        return '#FFC107';  // Yellow for pending
+      case 'rejected':
+        return '#F44336';  // Red for rejected
+      default:
+        return '#9E9E9E';  // Grey for other statuses
+    }
   };
 
-  // Function to handle sorting
-  const handleSortRequest = (key: keyof LeaveData) => {
-    const direction = sortConfig.key === key && sortConfig.direction === 'asc' ? 'desc' : 'asc';
-    setSortConfig({ key, direction });
+  const handleRequestSort = (key: keyof LeaveData) => {
+    setSortConfig((prev) => ({
+      key,
+      direction: prev.key === key && prev.direction === 'asc' ? 'desc' : 'asc',
+    }));
   };
 
   // Sort filtered data
@@ -203,49 +243,17 @@ const LeaveHistory = () => {
         </FormControl>
       </Stack>
 
-      {/* Table */}
-      <TableContainer component={Paper} sx={{ borderRadius: 2, overflowX: 'auto', overflowY: 'hidden' }}>
-        <Table>
-          <TableHead sx={{ bgcolor: "grey.200" }}>
-            <TableRow>
-              {["user", "role", "department", "leaveType", "startDate", "endDate", "status"].map(
-                (key) => (
-                  <TableCell key={key}>
-                    <TableSortLabel
-                      active={sortConfig.key === key}
-                      direction={sortConfig.direction}
-                      onClick={() => handleSortRequest(key as keyof LeaveData)}
-                    >
-                      {key.charAt(0).toUpperCase() + key.slice(1)}
-                    </TableSortLabel>
-                  </TableCell>
-                )
-              )}
-            </TableRow>
-          </TableHead>
-          <TableBody>
-            {sortedData.length > 0 ? (
-              sortedData.map((row) => (
-                <TableRow key={row.id}>
-                  <TableCell>{row.user}</TableCell>
-                  <TableCell>{row.role}</TableCell>
-                  <TableCell>{row.department}</TableCell>
-                  <TableCell>{row.leaveType}</TableCell>
-                  <TableCell>{row.startDate}</TableCell>
-                  <TableCell>{row.endDate}</TableCell>
-                  <TableCell>{getStatusChip(row.status)}</TableCell>
-                </TableRow>
-              ))
-            ) : (
-              <TableRow>
-                <TableCell colSpan={7} align="center">
-                  No records found
-                </TableCell>
-              </TableRow>
-            )}
-          </TableBody>
-        </Table>
-      </TableContainer>
+      <CustomTable
+        columns={columns}
+        data={sortedData}
+        sortDirection={sortConfig.direction}
+        orderBy={sortConfig.key}
+        handleRequestSort={(key) => handleRequestSort(key as keyof LeaveData)}
+        rowsPerPage={rowsPerPage}
+        page={page}
+        handleChangePage={handleChangePage}
+        handleChangeRowsPerPage={handleChangeRowsPerPage}
+      />
     </Stack>
   );
 };

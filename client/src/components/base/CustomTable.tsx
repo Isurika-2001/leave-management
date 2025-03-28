@@ -1,4 +1,7 @@
-import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, TableSortLabel, Button, TablePagination, Typography, Stack } from '@mui/material';
+import { 
+  Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, TableSortLabel, 
+  Button, TablePagination, Typography, Stack 
+} from '@mui/material';
 import { FC } from 'react';
 
 interface TableColumn {
@@ -41,6 +44,9 @@ const CustomTable: FC<TableProps> = ({
   handleChangePage, 
   handleChangeRowsPerPage 
 }) => {
+  // Check if any action handlers exist
+  const hasActions = onView || onEdit || onDelete || onApprove || onDecline;
+
   return (
     <TableContainer component={Paper} sx={{ borderRadius: 2, overflowX: 'auto', overflowY: 'hidden' }}>
       <Table>
@@ -61,7 +67,7 @@ const CustomTable: FC<TableProps> = ({
                 )}
               </TableCell>
             ))}
-            <TableCell align="right"><strong>Actions</strong></TableCell>
+            {hasActions && <TableCell align="right"><strong>Actions</strong></TableCell>}
           </TableRow>
         </TableHead>
         <TableBody>
@@ -72,33 +78,35 @@ const CustomTable: FC<TableProps> = ({
                   {row[column.id]}
                 </TableCell>
               ))}
-              <TableCell align="right">
-                {onView && (
-                  <Button variant="contained" color="primary" size="small" sx={{ mr: 1 }} onClick={() => onView(row.id)}>
-                    View
-                  </Button>
-                )}
-                {onEdit && (
-                  <Button variant="contained" color="info" size="small" sx={{ mr: 1 }} onClick={() => onEdit(row.id)}>
-                    Edit
-                  </Button>
-                )}
-                {onDelete && (
-                  <Button variant="contained" color="error" size="small" sx={{ mr: 1 }} onClick={() => onDelete(row.id)}>
-                    Delete
-                  </Button>
-                )}
-                {onDecline && (
-                  <Button variant="contained" color="error" size="small" sx={{ mr: 1 }} onClick={() => onDecline(row.id)}>
-                    Decline
-                  </Button>
-                )}
-                {onApprove && (
-                  <Button variant="contained" color="secondary" size="small" sx={{ mr: 1 }} onClick={() => onApprove(row.id)}>
-                    Approve
-                  </Button>
-                )}
-              </TableCell>
+              {hasActions && (
+                <TableCell align="right">
+                  {onView && (
+                    <Button variant="contained" color="primary" size="small" sx={{ mr: 1 }} onClick={() => onView(row.id)}>
+                      View
+                    </Button>
+                  )}
+                  {onEdit && (
+                    <Button variant="contained" color="info" size="small" sx={{ mr: 1 }} onClick={() => onEdit(row.id)}>
+                      Edit
+                    </Button>
+                  )}
+                  {onDelete && (
+                    <Button variant="contained" color="error" size="small" sx={{ mr: 1 }} onClick={() => onDelete(row.id)}>
+                      Delete
+                    </Button>
+                  )}
+                  {onDecline && (
+                    <Button variant="contained" color="error" size="small" sx={{ mr: 1 }} onClick={() => onDecline(row.id)}>
+                      Decline
+                    </Button>
+                  )}
+                  {onApprove && (
+                    <Button variant="contained" color="secondary" size="small" sx={{ mr: 1 }} onClick={() => onApprove(row.id)}>
+                      Approve
+                    </Button>
+                  )}
+                </TableCell>
+              )}
             </TableRow>
           ))}
         </TableBody>
@@ -106,7 +114,7 @@ const CustomTable: FC<TableProps> = ({
       
       {/* Pagination Controls and Page Number */}
       <Stack direction="row" justifyContent="space-between" alignItems="center" sx={{ mt: 2, bgcolor: 'lightGray' }}>
-        {/* Display Page Number with fixed width */}
+        {/* Display Page Number */}
         <Typography variant="body2" sx={{ width: '200px', mx: 2 }}>
           Page {page + 1} of {Math.ceil(data.length / rowsPerPage)}
         </Typography>

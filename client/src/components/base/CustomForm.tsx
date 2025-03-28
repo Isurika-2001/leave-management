@@ -11,6 +11,7 @@ interface Field {
   options?: { label: string; value: string | number }[]; // Options for select fields
   multiline?: boolean;
   rows?: number;
+  disabled?: boolean;
 }
 
 interface CustomFormProps {

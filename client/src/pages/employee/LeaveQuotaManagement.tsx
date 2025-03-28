@@ -5,10 +5,15 @@ import CustomTable from 'components/base/CustomTable';
 
 // Mock data for employee leave quotas
 const employeesLeaveQuota = [
-  { id: 1, name: 'Alice Brown', sick: 8, annual: 15, casual: 10, noPay: 0, liue: 5 },
-  { id: 2, name: 'Bob White', sick: 8, annual: 15, casual: 10, noPay: 0, liue: 5 },
-  { id: 3, name: 'Charlie Green', sick: 8, annual: 15, casual: 10, noPay: 0, liue: 5 },
-  { id: 4, name: 'David Black', sick: 8, annual: 15, casual: 10, noPay: 0, liue: 5 },
+  { id: 1, name: 'Alice Brown', sick: 8, annual: 15, casual: 10, noPay: 0, liue: 5, halfDay: 0, shortLeave: 0 },
+  { id: 2, name: 'Bob White', sick: 8, annual: 15, casual: 10, noPay: 0, liue: 5, halfDay: 0, shortLeave: 0 },
+  { id: 3, name: 'Charlie Green', sick: 8, annual: 15, casual: 10, noPay: 0, liue: 5, halfDay: 0, shortLeave: 0 },  
+  { id: 4, name: 'David Black', sick: 8, annual: 15, casual: 10, noPay: 0, liue: 5, halfDay: 0, shortLeave: 0 },
+  { id: 5, name: 'Eve Adams', sick: 8, annual: 15, casual: 10, noPay: 0, liue: 5, halfDay: 0, shortLeave: 0 },
+  { id: 6, name: 'Frank White', sick: 8, annual: 15, casual: 10, noPay: 0, liue: 5, halfDay: 0, shortLeave: 0 },
+  { id: 7, name: 'Grace Black', sick: 8, annual: 15, casual: 10, noPay: 0, liue: 5, halfDay: 0, shortLeave: 0 },
+  { id: 8, name: 'Hannah Green', sick: 8, annual: 15, casual: 10, noPay: 0, liue: 5, halfDay: 0, shortLeave: 0 },
+  { id: 9, name: 'Ian Brown', sick: 8, annual: 15, casual: 10, noPay: 0, liue: 5, halfDay: 0, shortLeave: 0 },
 ];
 
 const ManageLeaveQuota = (): ReactElement => {
@@ -47,6 +52,8 @@ const ManageLeaveQuota = (): ReactElement => {
     { id: 'casual', label: 'Casual Leave', sortable: true, align: 'center' },
     { id: 'noPay', label: 'No Pay Leave', sortable: true, align: 'center' },
     { id: 'liue', label: 'Liue Leave', sortable: true, align: 'center' },
+    { id: 'halfDay', label: 'Half Day Leave', sortable: true, align: 'center' },
+    { id: 'shortLeave', label: 'Short Leave', sortable: true, align: 'center' },
   ];  
   
   const navigate = useNavigate();

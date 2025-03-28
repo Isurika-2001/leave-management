@@ -105,7 +105,7 @@ const CustomTable: FC<TableProps> = ({
       </Table>
       
       {/* Pagination Controls and Page Number */}
-      <Stack direction="row" justifyContent="space-between" alignItems="center" sx={{ mt: 2 }}>
+      <Stack direction="row" justifyContent="space-between" alignItems="center" sx={{ mt: 2, bgcolor: 'lightGray' }}>
         {/* Display Page Number with fixed width */}
         <Typography variant="body2" sx={{ width: '200px', mx: 2 }}>
           Page {page + 1} of {Math.ceil(data.length / rowsPerPage)}

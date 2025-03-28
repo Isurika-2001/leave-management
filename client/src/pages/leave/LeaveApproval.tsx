@@ -1,8 +1,6 @@
-import {
-  Stack,
-  Typography,
-} from '@mui/material';
+import { Stack, Typography } from '@mui/material';
 import { useState } from 'react';
+import { useNavigate } from 'react-router-dom'; // Import useNavigate from react-router-dom
 import CustomTable from 'components/base/CustomTable';
 
 interface LeaveData {
@@ -69,6 +67,12 @@ const PendingLeaveRequests = () => {
     console.log(`Declined leave request ID: ${id}`);
   };
 
+  // Navigate to the view page for the specific leave request
+  const navigate = useNavigate();
+  const handleView = (id: number) => {
+    navigate(`/leave/leave-approval/${id}`); // This will navigate to /:id page
+  };
+
   // Columns definition
   interface TableColumn {
     id: string;
@@ -89,7 +93,7 @@ const PendingLeaveRequests = () => {
 
   const handleChangePage = (_event: unknown, newPage: number) => {
     setPage(newPage);
-  };  
+  };
 
   const handleChangeRowsPerPage = (event: React.ChangeEvent<HTMLInputElement>) => {
     setRowsPerPage(parseInt(event.target.value, 10));
@@ -122,7 +126,7 @@ const PendingLeaveRequests = () => {
         handleRequestSort={(key) => handleRequestSort(key as keyof LeaveData)}
         onDecline={handleDecline}
         onApprove={handleApprove}
-        onView={(id) => console.log(`View leave request ID: ${id}`)}
+        onView={handleView} // Pass handleView here
         rowsPerPage={rowsPerPage}
         page={page}
         handleChangePage={handleChangePage}

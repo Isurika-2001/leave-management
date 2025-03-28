@@ -1,5 +1,6 @@
 import { Button, Stack, Typography } from '@mui/material';
 import { ReactElement, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import CustomTable from 'components/base/CustomTable';
 
 // Mock data for employees, based on the user schema
@@ -57,6 +58,12 @@ const EmployeeManagement = (): ReactElement => {
     setRowsPerPage(parseInt(event.target.value, 10));
     setPage(0); // Reset to first page when rows per page change
   };
+  
+  // navigate to /create-employee
+  const navigate = useNavigate();
+  const handleNavigate = () => {
+    navigate(`/employee/create-employee`); // This will navigate to /:id page
+  };
 
   const columns = [
     { id: 'name', label: 'Employee Name', sortable: true },
@@ -83,7 +90,7 @@ const EmployeeManagement = (): ReactElement => {
         <Typography variant="subtitle1" color="text.primary">
           Employee Management
         </Typography>
-        <Button variant="contained" color="primary" sx={{ maxWidth: 200 }}>
+        <Button onClick={handleNavigate} variant="contained" color="primary" sx={{ maxWidth: 200 }}>
           Create New Employee
         </Button>
       </Stack>

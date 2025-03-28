@@ -3,44 +3,50 @@ import { Button, Stack, Typography, Box } from '@mui/material';
 import CustomForm from 'components/base/CustomForm';
 import { SelectChangeEvent } from '@mui/material';
 
-interface LeaveRequestData {
-  leaveType: string;
-  startDate: string;
-  endDate: string;
-  reason: string;
+interface EmployeeData {
+  employeeName: string;
+  email: string;
+  department: string;
+  accountType: string;
 }
 
-const LeaveRequest = (): ReactElement => {
-  const [leaveRequest, setLeaveRequest] = useState<LeaveRequestData>({
-    leaveType: '',
-    startDate: '',
-    endDate: '',
-    reason: '',
+const CreateEmployee = (): ReactElement => {
+  const [employee, setEmployee] = useState<EmployeeData>({
+    employeeName: '',
+    email: '',
+    department: '',
+    accountType: '',
   });
 
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [error, setError] = useState('');
 
-  const leaveOptions = [
-    { label: 'Sick Leave', value: 'sick' },
-    { label: 'Casual Leave', value: 'casual' },
-    { label: 'Vacation Leave', value: 'vacation' },
-    { label: 'Maternity Leave', value: 'maternity' },
-    { label: 'Paternity Leave', value: 'paternity' },
+  const departmentOptions = [
+    { label: 'HR', value: 'hr' },
+    { label: 'Engineering', value: 'engineering' },
+    { label: 'Marketing', value: 'marketing' },
+    { label: 'Sales', value: 'sales' },
+  ];
+
+  const accountTypeOptions = [
+    { label: 'User', value: 'user' },
+    { label: 'Supervisor', value: 'supervisor' },
+    { label: 'Admin', value: 'admin' },
+    { label: 'Super Admin', value: 'superAdmin' },
   ];
 
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement> | SelectChangeEvent<string | number>
   ) => {
     const { name, value } = e.target;
-    setLeaveRequest((prev) => ({
+    setEmployee((prev) => ({
       ...prev,
       [name]: value,
     }));
   };
 
-  const handleLeaveRequest = async () => {
-    if (!leaveRequest.leaveType || !leaveRequest.startDate || !leaveRequest.endDate || !leaveRequest.reason) {
+  const handleCreateEmployee = async () => {
+    if (!employee.employeeName || !employee.email || !employee.department || !employee.accountType) {
       setError('Please fill in all fields');
       return;
     }
@@ -49,12 +55,12 @@ const LeaveRequest = (): ReactElement => {
       setIsSubmitting(true);
       setError('');
 
-      const response = await fetch('/api/leave-request', {
+      const response = await fetch('/api/employees', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify(leaveRequest),
+        body: JSON.stringify(employee),
       });
 
       const data = await response.json();
@@ -64,11 +70,11 @@ const LeaveRequest = (): ReactElement => {
       }
 
       alert(data.message);
-      setLeaveRequest({
-        leaveType: '',
-        startDate: '',
-        endDate: '',
-        reason: '',
+      setEmployee({
+        employeeName: '',
+        email: '',
+        department: '',
+        accountType: '',
       });
     } catch (err) {
       setError((err as Error).message || 'An error occurred');
@@ -80,36 +86,37 @@ const LeaveRequest = (): ReactElement => {
   // Define the fields for the form
   const fields = [
     {
-      name: 'leaveType',
-      label: 'Leave Type',
+      name: 'employeeName',
+      label: 'Employee Name',
+      type: 'text',
+      value: employee.employeeName,
+      onChange: handleChange,
+      fullWidth: true,
+    },
+    {
+      name: 'email',
+      label: 'Email',
+      type: 'email',
+      value: employee.email,
+      onChange: handleChange,
+      fullWidth: true,
+    },
+    {
+      name: 'department',
+      label: 'Department',
       type: 'select',
-      value: leaveRequest.leaveType,
+      value: employee.department,
       onChange: handleChange,
-      options: leaveOptions,
+      options: departmentOptions,
       fullWidth: true,
     },
     {
-      name: 'startDate',
-      label: 'Start Date',
-      type: 'date',
-      value: leaveRequest.startDate,
+      name: 'accountType',
+      label: 'Account Type',
+      type: 'select',
+      value: employee.accountType,
       onChange: handleChange,
-      fullWidth: true,
-    },
-    {
-      name: 'endDate',
-      label: 'End Date',
-      type: 'date',
-      value: leaveRequest.endDate,
-      onChange: handleChange,
-      fullWidth: true,
-    },
-    {
-      name: 'reason',
-      label: 'Reason',
-      type: 'textarea',
-      value: leaveRequest.reason,
-      onChange: handleChange,
+      options: accountTypeOptions,
       fullWidth: true,
     },
   ];
@@ -118,7 +125,7 @@ const LeaveRequest = (): ReactElement => {
     <Box display="flex" justifyContent="center" width="100%" p={3}>
       <Stack sx={{ width: '100%', maxWidth: '380px', boxShadow: 3, bgcolor: 'white', borderRadius: 2, p: 3 }}>
         <Typography variant="h6" textAlign="center" mb={2}>
-          Leave Request
+          Create New Employee
         </Typography>
 
         {/* Render CustomForm with the fields and handlers, without the submit button */}
@@ -135,15 +142,15 @@ const LeaveRequest = (): ReactElement => {
           variant="contained"
           color="primary"
           fullWidth
-          onClick={handleLeaveRequest}
+          onClick={handleCreateEmployee}
           disabled={isSubmitting}
           sx={{ mt: 2 }}
         >
-          {isSubmitting ? 'Submitting...' : 'Request Leave'}
+          {isSubmitting ? 'Submitting...' : 'Create Employee'}
         </Button>
       </Stack>
     </Box>
   );
 };
 
-export default LeaveRequest;
+export default CreateEmployee;

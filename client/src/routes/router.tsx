@@ -41,6 +41,9 @@ const LeaveApproval = lazy(() => import('pages/leave/LeaveApproval'));
 const LeaveApprovalView = lazy(() => import('pages/leave/LeaveApprovalView'));
 
 const DepartmentManagement = lazy(() => import('pages/department/DepartmentManagement'));
+const CreateDepartment = lazy(() => import('pages/department/CreateDepartment'));
+const UpdateDepartment = lazy(() => import('pages/department/UpdateDepartment'));
+
 const EmployeeManagement = lazy(() => import('pages/employee/EmployeeManagement'));
 const CreateEmployee = lazy(() => import('pages/employee/CreateNewEmployee'));
 const UpdateEmployee = lazy(() => import('pages/employee/UpdateEmployee'));
@@ -74,6 +77,8 @@ const routes: RouteObject[] = [
           { path: paths.leaveApprovalView, element: <LeaveApprovalView /> },
 
           { path: paths.departmentManagement, element: <DepartmentManagement /> },
+          { path: paths.createDepartment, element: <CreateDepartment /> },
+          { path: paths.updateDepartment, element: <UpdateDepartment /> },
           
           { path: paths.employeeManagement, element: <EmployeeManagement /> },
           { path: paths.createEmployee, element: <CreateEmployee /> },

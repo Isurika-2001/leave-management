@@ -9,7 +9,7 @@ export const rootPaths = {
   messageRoot: 'messages',
   errorRoot: 'error',
   leaveRoot: 'leave',
-  departmentRoot: '',  // Updated to reflect the new root path for department
+  departmentRoot: 'department',  // Updated to reflect the new root path for department
   employeeRoot: 'employee',  // Updated to reflect the new root path for employee
   leaveQuotaRoot: 'leave-quota',  // Updated to reflect the new root path for leave-quota
 };
@@ -25,6 +25,8 @@ export default {
   leaveApproval: `/${rootPaths.leaveRoot}/leave-approval`,
   leaveApprovalView: `/${rootPaths.leaveRoot}/leave-approval/:id`,
   departmentManagement: `/${rootPaths.departmentRoot}/department-management`,
+  createDepartment: `/${rootPaths.departmentRoot}/create-department`,
+  updateDepartment: `/${rootPaths.departmentRoot}/update-department/:id`,
   employeeManagement: `/${rootPaths.employeeRoot}/employee-management`,
   createEmployee: `/${rootPaths.employeeRoot}/create-employee`,
   updateEmployee: `/${rootPaths.employeeRoot}/update-employee/:id`,

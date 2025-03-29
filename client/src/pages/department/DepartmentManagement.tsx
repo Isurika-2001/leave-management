@@ -1,17 +1,22 @@
-import { Button, Stack, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, Typography, TableSortLabel } from '@mui/material';
+import { Button, Stack, Typography } from '@mui/material';
 import { ReactElement, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import CustomTable from 'components/base/CustomTable';
 
-// Mock data for departments with supervisor name
+// Mock data for departments
 const departments = [
-  { id: 1, name: 'HR', supervisor: 'John Doe' },
-  { id: 2, name: 'Finance', supervisor: 'Jane Smith' },
-  { id: 3, name: 'Engineering', supervisor: 'Mark Wilson' },
-  { id: 4, name: 'Sales', supervisor: 'Lisa Brown' },
+  { id: 1, name: 'Marketing', description: 'Handles marketing and promotions' },
+  { id: 2, name: 'Academic', description: 'Manages academic activities' },
+  { id: 3, name: 'HR', description: 'Handles human resources' },
+  { id: 4, name: 'Finance', description: 'Manages financials and accounts' },
 ];
 
 const DepartmentManagement = (): ReactElement => {
   const [sortDirection, setSortDirection] = useState<'asc' | 'desc'>('asc'); // Sorting direction
   const [orderBy, setOrderBy] = useState<string>('name'); // Column to sort by
+  const [departmentList, setDepartmentList] = useState(departments); // Department list state
+  const [page, setPage] = useState(0); // Current page
+  const [rowsPerPage, setRowsPerPage] = useState(5); // Rows per page
 
   // Sorting function
   const handleRequestSort = (property: string) => {
@@ -21,15 +26,43 @@ const DepartmentManagement = (): ReactElement => {
   };
 
   // Sorting the departments based on selected column and direction
-  const sortedDepartments = [...departments].sort((a, b) => {
+  const sortedDepartments = [...departmentList].sort((a, b) => {
     if (orderBy === 'name') {
       return sortDirection === 'asc' ? a.name.localeCompare(b.name) : b.name.localeCompare(a.name);
     }
-    if (orderBy === 'supervisor') {
-      return sortDirection === 'asc' ? a.supervisor.localeCompare(b.supervisor) : b.supervisor.localeCompare(a.supervisor);
+    if (orderBy === 'description') {
+      return sortDirection === 'asc' ? a.description.localeCompare(b.description) : b.description.localeCompare(a.description);
     }
     return 0;
   });
+
+  // Handle delete department
+  const handleDelete = (id: number) => {
+    const updatedDepartments = departmentList.filter((department) => department.id !== id);
+    setDepartmentList(updatedDepartments);
+  };
+
+  // Handle change of page
+  const handleChangePage = (_event: unknown, newPage: number) => {
+    setPage(newPage);
+  };
+
+  // Handle change of rows per page
+  const handleChangeRowsPerPage = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setRowsPerPage(parseInt(event.target.value, 10));
+    setPage(0); // Reset to first page when rows per page change
+  };
+
+  // Navigate to create department page
+  const navigate = useNavigate();
+  const handleNavigate = () => {
+    navigate(`/department/create-department`); // This will navigate to /create-department page
+  };
+
+  const columns = [
+    { id: 'name', label: 'Department Name', sortable: true },
+    { id: 'description', label: 'Description', sortable: true },
+  ];
 
   return (
     <Stack
@@ -49,53 +82,28 @@ const DepartmentManagement = (): ReactElement => {
         <Typography variant="subtitle1" color="text.primary">
           Department Management
         </Typography>
-        <Button variant="contained" color="primary" sx={{ maxWidth: 200 }}>
+        <Button onClick={handleNavigate} variant="contained" color="primary" sx={{ maxWidth: 200 }}>
           Create New Department
         </Button>
       </Stack>
 
-      {/* Table of current departments */}
-      <TableContainer component={Paper} sx={{ borderRadius: 2, overflow: 'hidden' }}>
-        <Table>
-          <TableHead sx={{ bgcolor: 'grey.200' }}>
-            <TableRow>
-              <TableCell>
-                <TableSortLabel
-                  active={orderBy === 'name'}
-                  direction={orderBy === 'name' ? sortDirection : 'asc'}
-                  onClick={() => handleRequestSort('name')}
-                >
-                  Department Name
-                </TableSortLabel>
-              </TableCell>
-              <TableCell>
-                <TableSortLabel
-                  active={orderBy === 'supervisor'}
-                  direction={orderBy === 'supervisor' ? sortDirection : 'asc'}
-                  onClick={() => handleRequestSort('supervisor')}
-                >
-                  Supervisor
-                </TableSortLabel>
-              </TableCell>
-              <TableCell align="right"><strong>Actions</strong></TableCell>
-            </TableRow>
-          </TableHead>
-          <TableBody>
-            {sortedDepartments.map((department) => (
-              <TableRow key={department.id}>
-                <TableCell>{department.name}</TableCell>
-                <TableCell>{department.supervisor}</TableCell>
-                <TableCell align="right">
-                  {/* You can add buttons here for future actions */}
-                  <Button variant="contained" color="primary" size="small">
-                    Edit
-                  </Button>
-                </TableCell>
-              </TableRow>
-            ))}
-          </TableBody>
-        </Table>
-      </TableContainer>
+      {/* Custom Table for Departments */}
+      <CustomTable
+        columns={columns}
+        data={sortedDepartments}
+        sortDirection={sortDirection}
+        orderBy={orderBy}
+        handleRequestSort={handleRequestSort}
+        onDelete={handleDelete}
+        // on edit by id
+        onEdit={(id => {
+          navigate(`/department/update-department/${id}`); // This will navigate to /:id page
+        })}
+        rowsPerPage={rowsPerPage}
+        page={page}
+        handleChangePage={handleChangePage}
+        handleChangeRowsPerPage={handleChangeRowsPerPage}
+      />
     </Stack>
   );
 };

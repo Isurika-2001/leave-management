@@ -77,7 +77,7 @@ const navItems: NavItem[] = [
   },
   {
     title: 'Department',
-    path: '/department-management',
+    path: '/department/department-management',
     icon: 'mingcute:grid-fill',
     active: true,
     collapsible: false
